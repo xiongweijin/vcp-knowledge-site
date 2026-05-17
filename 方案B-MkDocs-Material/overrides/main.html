@@ -3,7 +3,7 @@
 {% block content %}
   {{ super() }}
 
-  {% if page and page.meta.comments is not sameas false %}
+  {% if not page.meta.get("comments") == false %}
     {% set giscus = config.extra.giscus %}
     <section class="vcp-comments" aria-label="留言区">
       <h2 id="comments">留言区</h2>

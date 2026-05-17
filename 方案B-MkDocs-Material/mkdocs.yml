@@ -41,6 +41,9 @@ plugins:
 extra_css:
   - stylesheets/extra.css
 
+extra_javascript:
+  - javascripts/giscus.js
+
 extra:
   giscus:
     enabled: true
