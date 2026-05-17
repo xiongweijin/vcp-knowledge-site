@@ -1,0 +1,37 @@
+@media screen and (min-width: 76.25em) {
+  .md-sidebar {
+    position: sticky;
+    top: 3.6rem;
+    align-self: flex-start;
+    height: calc(100vh - 3.6rem);
+  }
+
+  .md-sidebar__scrollwrap {
+    max-height: calc(100vh - 4.8rem);
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+}
+
+.vcp-comments {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.vcp-comments h2 {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+}
+
+.vcp-comments-placeholder {
+  padding: 1rem 1.1rem;
+  border: 1px dashed var(--md-default-fg-color--lighter);
+  border-radius: 0.4rem;
+  color: var(--md-default-fg-color--light);
+  background: var(--md-code-bg-color);
+}
+
+.vcp-comments-placeholder p {
+  margin: 0;
+}

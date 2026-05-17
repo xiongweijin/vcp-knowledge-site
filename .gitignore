@@ -1,0 +1,12 @@
+logs/
+tools/
+vcp-knowledge-mkdocs/
+
+# MkDocs build output
+方案B-MkDocs-Material/site/
+
+# Local Hugo comparison workspace, not needed for GitHub Pages deployment
+方案A-Hugo-FixIt/
+
+.DS_Store
+Thumbs.db

@@ -1,0 +1,101 @@
+site_name: VCP 知识站
+site_description: VCPToolBox 更新日志、源码解读与 Agent 提示词档案
+site_author: VCP Maintainer
+repo_url: ''
+
+theme:
+  name: material
+  custom_dir: overrides
+  language: zh
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - navigation.top
+    - navigation.tracking
+    - toc.follow
+    - search.highlight
+    - search.share
+    - content.code.copy
+  palette:
+    - scheme: default
+      primary: blue grey
+      accent: cyan
+      toggle:
+        icon: material/weather-night
+        name: 切换到深色模式
+    - scheme: slate
+      primary: blue grey
+      accent: cyan
+      toggle:
+        icon: material/weather-sunny
+        name: 切换到浅色模式
+
+plugins:
+  - search:
+      lang:
+        - zh
+        - en
+
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  giscus:
+    enabled: false
+    repo: ""
+    repo_id: ""
+    category: "General"
+    category_id: ""
+    mapping: "pathname"
+    reactions_enabled: "1"
+    input_position: "bottom"
+    lang: "zh-CN"
+    theme: "preferred_color_scheme"
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+nav:
+  - 首页: index.md
+  - 阅读路线: reading-routes.md
+  - VCP 系统解读:
+      - vcp-system/index.md
+      - 系统全景: vcp-system/01-system-overview.md
+      - 变量与占位符体系: vcp-system/02-placeholders.md
+      - 上下文折叠体系: vcp-system/03-context-folding.md
+      - 记忆系统: vcp-system/04-memory.md
+      - 工具调用协议: vcp-system/05-tool-protocol.md
+      - 插件生态: vcp-system/06-plugins.md
+      - Agent 提示词工程: vcp-system/07-agent-prompt.md
+      - 消息处理管线: vcp-system/08-message-pipeline.md
+      - 多 Agent 协同体系: vcp-system/09-multi-agent.md
+      - 分布式与安全: vcp-system/10-distributed-security.md
+      - Agent 配置建议: vcp-system/11-agent-config.md
+      - 提示词架构优化方案: vcp-system/12-prompt-architecture.md
+      - VCP 系统深度导读: vcp-system/14-deep-guide.md
+      - VCP 概念学习手册: vcp-system/15-human-guide.md
+      - VCP 源码导航与运维手册: vcp-system/16-agent-ops-guide.md
+  - 更新日志:
+      - changelog/index.md
+      - 2026-05-12 VCP 更新: changelog/2026-05-12-vcp-update.md
+      - XiaoKe v4.0 更新: changelog/xiaoke-v4.0.md
+  - Agent 提示词档案:
+      - agents/index.md
+  - 审核与复盘:
+      - review/index.md
+      - 内容审核报告 2026-05-16: review/13-content-audit-20260516.md
+      - 系统联动全景与盲区分析: review/99-blindspots.md
+  - 部署:
+      - deploy/github-pages.md

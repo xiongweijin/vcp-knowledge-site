@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VCP 知识站方案对比</title>
+  <style>
+    :root { color-scheme: light dark; --bg:#f6f7f9; --ink:#17202a; --muted:#5d6875; --line:#d9dee7; --panel:#ffffff; --accent:#0f6b7a; --accent2:#8a5a00; }
+    @media (prefers-color-scheme: dark) { :root { --bg:#111417; --ink:#edf1f5; --muted:#aab4bf; --line:#2b333d; --panel:#181d23; --accent:#5cc8d7; --accent2:#e2b45f; } }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:"Microsoft YaHei", "Segoe UI", sans-serif; background:var(--bg); color:var(--ink); line-height:1.65; }
+    header { padding:56px clamp(20px, 6vw, 84px) 28px; border-bottom:1px solid var(--line); }
+    h1 { margin:0 0 10px; font-size:clamp(32px, 5vw, 58px); letter-spacing:0; }
+    .lead { max-width:840px; margin:0; color:var(--muted); font-size:18px; }
+    main { padding:34px clamp(20px, 6vw, 84px) 60px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:18px; max-width:1100px; }
+    .card { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:22px; }
+    .card h2 { margin:0 0 8px; font-size:24px; }
+    .tag { display:inline-block; margin-bottom:18px; padding:3px 9px; border:1px solid var(--line); border-radius:999px; color:var(--muted); font-size:13px; }
+    ul { padding-left:20px; margin:12px 0 18px; }
+    a { color:var(--accent); text-decoration:none; font-weight:600; }
+    a:hover { text-decoration:underline; }
+    .recommend { border-color:color-mix(in srgb, var(--accent) 45%, var(--line)); }
+    .recommend h2 { color:var(--accent); }
+    .blog h2 { color:var(--accent2); }
+    .note { max-width:1100px; margin-top:20px; padding:18px 20px; border-left:4px solid var(--accent); background:color-mix(in srgb, var(--panel) 88%, var(--accent)); border-radius:6px; }
+    code { background:rgba(127,127,127,.12); padding:2px 5px; border-radius:4px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>VCP 知识站方案对比</h1>
+    <p class="lead">这里放了两套样板：Hugo + FixIt 更像公开技术博客，MkDocs Material 更像工程文档中心。原始资料目录保持不动，两个方案都从源资料复制整理。</p>
+  </header>
+  <main>
+    <section class="grid">
+      <article class="card blog">
+        <span class="tag">方案 A / 展示型</span>
+        <h2>Hugo + FixIt</h2>
+        <p>接近 Cygnus Tech Blog 的形态，适合对外展示、写系列文章、做个人技术品牌。</p>
+        <ul>
+          <li>更像博客和专栏</li>
+          <li>适合成熟文章发布</li>
+          <li>需要安装 Hugo Extended 和 FixIt 主题</li>
+        </ul>
+        <p><a href="方案A-Hugo-FixIt/README.md">查看运行说明</a></p>
+      </article>
+      <article class="card recommend">
+        <span class="tag">方案 B / 推荐主力</span>
+        <h2>MkDocs Material</h2>
+        <p>更适合 VCP 这种项目知识库，左侧导航、搜索、分组、运维手册都更自然。</p>
+        <ul>
+          <li>更像正式工程文档</li>
+          <li>适合内部知识库和 Agent 查阅</li>
+          <li>安装 <code>mkdocs-material</code> 后即可预览</li>
+        </ul>
+        <p><a href="方案B-MkDocs-Material/README.md">查看运行说明</a></p>
+      </article>
+    </section>
+    <section class="note">
+      <strong>我的建议：</strong>先用 MkDocs Material 作为主知识库；Hugo + FixIt 只放已经整理成熟、适合公开展示的文章。这样既稳，也保留漂亮的展示面。
+    </section>
+    <p style="margin-top:24px"><a href="两种方案对比.md">查看完整文字对比</a> · <a href="README.md">查看目录说明</a></p>
+  </main>
+</body>
+</html>
