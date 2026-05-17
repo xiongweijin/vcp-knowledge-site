@@ -1,0 +1,1169 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VCP 动态城市地图</title>
+  <style>
+    :root {
+      --paper: #f7f0e3;
+      --paper-deep: #eadcc4;
+      --ink: #19212a;
+      --muted: #667085;
+      --line: #c9bda8;
+      --entry: #245b7a;
+      --memory: #486b3f;
+      --tool: #9a4c2e;
+      --remote: #6b5a8c;
+      --govern: #7a6430;
+      --context: #2f6f64;
+      --model: #7e343f;
+      --white: #fffaf0;
+      --shadow: 0 18px 48px rgba(63, 48, 24, .16);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(25, 33, 42, .035) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(25, 33, 42, .03) 1px, transparent 1px),
+        var(--paper);
+      background-size: 32px 32px, 32px 32px, auto;
+      font-family: "Microsoft YaHei", "Segoe UI", "PingFang SC", sans-serif;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .shell {
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: end;
+      margin: 0 auto 18px;
+      max-width: 1560px;
+    }
+
+    .title-block {
+      border-left: 5px solid var(--tool);
+      padding-left: 18px;
+    }
+
+    .eyebrow {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    h1 {
+      margin: 4px 0 8px;
+      font-family: Georgia, "Times New Roman", "Microsoft YaHei", serif;
+      font-size: clamp(34px, 5vw, 72px);
+      line-height: .98;
+      letter-spacing: 0;
+    }
+
+    .lede {
+      max-width: 900px;
+      margin: 0;
+      color: #344054;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .quick-links {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .link-pill,
+    .mode-btn,
+    .small-btn {
+      appearance: none;
+      border: 1px solid rgba(25, 33, 42, .18);
+      background: rgba(255, 250, 240, .82);
+      color: var(--ink);
+      min-height: 38px;
+      padding: 8px 12px;
+      border-radius: var(--radius);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform .16s ease, border-color .16s ease, background .16s ease;
+    }
+
+    .link-pill:hover,
+    .mode-btn:hover,
+    .small-btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(25, 33, 42, .38);
+      background: #fffdfa;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(720px, 1fr) minmax(340px, 440px);
+      gap: 18px;
+      max-width: 1560px;
+      margin: 0 auto;
+    }
+
+    .map-panel,
+    .detail-panel,
+    .route-panel,
+    .source-panel {
+      border: 1px solid rgba(25, 33, 42, .16);
+      background: rgba(255, 250, 240, .82);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+    }
+
+    .map-panel {
+      position: relative;
+      min-height: 780px;
+      overflow: hidden;
+    }
+
+    .map-head {
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(25, 33, 42, .12);
+      background: rgba(247, 240, 227, .72);
+    }
+
+    .map-head h2,
+    .detail-panel h2,
+    .route-panel h2,
+    .source-panel h2 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .mode-strip {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .mode-btn {
+      min-height: 34px;
+      padding: 6px 10px;
+      font-size: 13px;
+    }
+
+    .mode-btn.active {
+      color: #fffaf0;
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .city-map {
+      position: relative;
+      height: 700px;
+      padding: 22px;
+    }
+
+    .lines {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .flow-line {
+      fill: none;
+      stroke: rgba(25, 33, 42, .22);
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke .2s ease, stroke-width .2s ease, opacity .2s ease;
+    }
+
+    .flow-line.dim {
+      opacity: .14;
+    }
+
+    .flow-line.active {
+      opacity: 1;
+      stroke-width: 3.8;
+      stroke-dasharray: 7 8;
+      animation: dash 1.4s linear infinite;
+    }
+
+    .flow-line.request.active { stroke: var(--entry); }
+    .flow-line.memory.active { stroke: var(--memory); }
+    .flow-line.tool.active { stroke: var(--tool); }
+    .flow-line.remote.active { stroke: var(--remote); }
+    .flow-line.govern.active { stroke: var(--govern); }
+
+    @keyframes dash {
+      to { stroke-dashoffset: -30; }
+    }
+
+    .map-grid {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(6, minmax(118px, 1fr));
+      grid-template-rows: repeat(5, 1fr);
+      gap: 14px;
+    }
+
+    .node {
+      border: 1px solid rgba(25, 33, 42, .2);
+      background: var(--white);
+      color: var(--ink);
+      border-radius: var(--radius);
+      padding: 12px;
+      min-width: 0;
+      min-height: 108px;
+      text-align: left;
+      box-shadow: 0 8px 22px rgba(63, 48, 24, .10);
+      cursor: pointer;
+      position: relative;
+      display: grid;
+      align-content: space-between;
+      gap: 10px;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, opacity .18s ease;
+    }
+
+    .node:hover,
+    .node.active {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 30px rgba(63, 48, 24, .18);
+      border-color: var(--ink);
+    }
+
+    .node.dim {
+      opacity: .42;
+    }
+
+    .node strong {
+      display: block;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    .node span {
+      color: #4b5563;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .node::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      border-radius: var(--radius) var(--radius) 0 0;
+      background: var(--entry);
+    }
+
+    .type-entry::before { background: var(--entry); }
+    .type-memory::before { background: var(--memory); }
+    .type-context::before { background: var(--context); }
+    .type-tool::before { background: var(--tool); }
+    .type-remote::before { background: var(--remote); }
+    .type-govern::before { background: var(--govern); }
+    .type-model::before { background: var(--model); }
+
+    .tag {
+      width: fit-content;
+      max-width: 100%;
+      padding: 4px 7px;
+      border: 1px solid rgba(25, 33, 42, .15);
+      border-radius: 999px;
+      color: #3f3a2f;
+      background: rgba(234, 220, 196, .68);
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    [data-id="user"] { grid-column: 1; grid-row: 1; }
+    [data-id="gate"] { grid-column: 2; grid-row: 1; }
+    [data-id="route"] { grid-column: 3; grid-row: 1; }
+    [data-id="chat"] { grid-column: 4; grid-row: 1; }
+    [data-id="llm"] { grid-column: 5; grid-row: 2; }
+    [data-id="final"] { grid-column: 6; grid-row: 2 / span 2; }
+    [data-id="materials"] { grid-column: 1; grid-row: 2; }
+    [data-id="message"] { grid-column: 2; grid-row: 2; }
+    [data-id="dynamic"] { grid-column: 3; grid-row: 2; }
+    [data-id="pre"] { grid-column: 4; grid-row: 2; }
+    [data-id="govern"] { grid-column: 1; grid-row: 3; }
+    [data-id="storage"] { grid-column: 2; grid-row: 3; }
+    [data-id="memory"] { grid-column: 3; grid-row: 3; }
+    [data-id="context"] { grid-column: 4; grid-row: 3; }
+    [data-id="parser"] { grid-column: 5; grid-row: 3; }
+    [data-id="remote"] { grid-column: 1 / span 2; grid-row: 4; }
+    [data-id="plugin"] { grid-column: 3; grid-row: 4; }
+    [data-id="tools"] { grid-column: 4; grid-row: 4; }
+    [data-id="executor"] { grid-column: 5; grid-row: 4; }
+    [data-id="bridge"] { grid-column: 2 / span 2; grid-row: 5; }
+    [data-id="admin"] { grid-column: 4 / span 2; grid-row: 5; }
+
+    .side-stack {
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 18px;
+      min-height: 780px;
+    }
+
+    .detail-panel {
+      padding: 18px;
+    }
+
+    .detail-kicker {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 8px;
+    }
+
+    .detail-title {
+      margin: 0 0 10px;
+      font-family: Georgia, "Times New Roman", "Microsoft YaHei", serif;
+      font-size: 30px;
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .detail-desc {
+      color: #344054;
+      line-height: 1.72;
+      margin: 0 0 14px;
+    }
+
+    .detail-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .fact-row {
+      border-top: 1px solid rgba(25, 33, 42, .12);
+      padding-top: 10px;
+    }
+
+    .fact-row b {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    .fact-row p,
+    .fact-row ul {
+      margin: 0;
+      color: #475467;
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .fact-row ul {
+      padding-left: 18px;
+    }
+
+    .source-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 6px;
+    }
+
+    .source-chip {
+      padding: 5px 7px;
+      border-radius: 6px;
+      background: #efe5d3;
+      border: 1px solid rgba(25, 33, 42, .12);
+      font-family: Consolas, "Microsoft YaHei", monospace;
+      font-size: 12px;
+      color: #3b3b35;
+    }
+
+    .route-panel,
+    .source-panel {
+      padding: 16px;
+    }
+
+    .search-box {
+      margin: 12px 0;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+    }
+
+    input[type="search"] {
+      width: 100%;
+      min-height: 38px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(25, 33, 42, .18);
+      background: #fffdfa;
+      color: var(--ink);
+      padding: 8px 10px;
+      font: inherit;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input[type="search"]:focus {
+      border-color: var(--entry);
+      box-shadow: 0 0 0 3px rgba(36, 91, 122, .16);
+    }
+
+    .mini-list {
+      display: grid;
+      gap: 8px;
+      max-height: 250px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .mini-item {
+      border: 1px solid rgba(25, 33, 42, .13);
+      background: rgba(255, 253, 250, .76);
+      border-radius: var(--radius);
+      padding: 9px 10px;
+      cursor: pointer;
+      transition: border-color .15s ease, background .15s ease;
+    }
+
+    .mini-item:hover,
+    .mini-item.active {
+      border-color: var(--ink);
+      background: #fffdfa;
+    }
+
+    .mini-item b {
+      display: block;
+      font-size: 13px;
+    }
+
+    .mini-item span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .below {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      max-width: 1560px;
+      margin: 18px auto 0;
+    }
+
+    .path-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .path-card {
+      border: 1px solid rgba(25, 33, 42, .13);
+      background: rgba(255, 253, 250, .74);
+      border-radius: var(--radius);
+      padding: 12px;
+    }
+
+    .path-card h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    .path-card p {
+      margin: 0;
+      color: #475467;
+      line-height: 1.62;
+      font-size: 14px;
+    }
+
+    .source-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 14px;
+    }
+
+    .source-table th,
+    .source-table td {
+      border-bottom: 1px solid rgba(25, 33, 42, .12);
+      padding: 9px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .source-table th {
+      color: #344054;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .source-table code {
+      font-family: Consolas, "Microsoft YaHei", monospace;
+      font-size: 12px;
+      color: #28303a;
+      background: #efe5d3;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    .footer-note {
+      max-width: 1560px;
+      margin: 18px auto 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .is-hidden {
+      display: none;
+    }
+
+    @media (max-width: 1180px) {
+      .workspace,
+      .below {
+        grid-template-columns: 1fr;
+      }
+
+      .side-stack {
+        min-height: 0;
+      }
+
+      .map-panel {
+        min-height: 0;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .shell {
+        padding: 14px;
+      }
+
+      .topbar {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .quick-links,
+      .mode-strip {
+        justify-content: flex-start;
+      }
+
+      .city-map {
+        height: auto;
+        padding: 14px;
+      }
+
+      .lines {
+        display: none;
+      }
+
+      .map-grid {
+        height: auto;
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .node {
+        grid-column: auto !important;
+        grid-row: auto !important;
+        min-height: 86px;
+      }
+
+      .path-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-title {
+        font-size: 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="title-block">
+        <div class="eyebrow">VCP Visual Atlas</div>
+        <h1>VCP 动态城市地图</h1>
+        <p class="lede">把 VCP 看成一座 AI 城市：城门接入请求，翻译局整理提示词，档案馆管理记忆，工具行会执行任务，远程分馆扩展能力，市政厅负责治理。</p>
+      </div>
+      <nav class="quick-links" aria-label="相关文档">
+        <a class="link-pill" href="15-VCP概念学习手册-V1.1-人类版-20260517.md">人类版手册</a>
+        <a class="link-pill" href="16-VCP源码导航与运维手册-V1.2-Agent版-20260517.md">Agent 版手册</a>
+        <a class="link-pill" href="14-VCP系统深度导读-20260516.md">深度导读母本</a>
+      </nav>
+    </header>
+
+    <section class="workspace" aria-label="VCP 城市地图工作区">
+      <section class="map-panel">
+        <div class="map-head">
+          <h2>核心关系总览</h2>
+          <div class="mode-strip" role="group" aria-label="关系线筛选">
+            <button class="mode-btn active" data-flow="all" type="button">全城</button>
+            <button class="mode-btn" data-flow="request" type="button">请求流</button>
+            <button class="mode-btn" data-flow="memory" type="button">记忆流</button>
+            <button class="mode-btn" data-flow="tool" type="button">工具流</button>
+            <button class="mode-btn" data-flow="remote" type="button">分布式</button>
+            <button class="mode-btn" data-flow="govern" type="button">治理</button>
+          </div>
+        </div>
+
+        <div class="city-map" id="map">
+          <svg class="lines" id="lines" aria-hidden="true"></svg>
+          <div class="map-grid">
+            <button class="node type-entry" data-id="user" type="button"><strong>用户与前端</strong><span>OpenWebUI、API Client、各类聊天入口</span><em class="tag">城市居民</em></button>
+            <button class="node type-entry" data-id="gate" type="button"><strong>城门</strong><span>OpenAI 兼容 API、鉴权、入口路由</span><em class="tag">server.js</em></button>
+            <button class="node type-entry" data-id="route" type="button"><strong>专用车道</strong><span>特殊模型透传、模型重定向、请求分流</span><em class="tag">路由层</em></button>
+            <button class="node type-entry" data-id="chat" type="button"><strong>总调度室</strong><span>组织一次聊天请求的完整流程</span><em class="tag">ChatCompletionHandler</em></button>
+            <button class="node type-model" data-id="llm" type="button"><strong>模型大脑</strong><span>后端 LLM API 负责生成与决策</span><em class="tag">API_URL</em></button>
+            <button class="node type-model" data-id="final" type="button"><strong>最终回答</strong><span>普通回复，或经过工具回路后的增强回复</span><em class="tag">Response</em></button>
+
+            <button class="node type-entry" data-id="materials" type="button"><strong>材料柜</strong><span>Agent、TVStxt、Var、Tar、SarPrompt</span><em class="tag">提示词材料</em></button>
+            <button class="node type-entry" data-id="message" type="button"><strong>翻译局</strong><span>展开变量、Agent、ToolBox、动态占位符</span><em class="tag">messageProcessor</em></button>
+            <button class="node type-tool" data-id="dynamic" type="button"><strong>智能货架</strong><span>按当前任务筛选工具说明</span><em class="tag">DynamicTools</em></button>
+            <button class="node type-context" data-id="pre" type="button"><strong>资料整理员</strong><span>messagePreprocessor 链改写和补全上下文</span><em class="tag">预处理</em></button>
+
+            <button class="node type-govern" data-id="govern" type="button"><strong>市政厅</strong><span>AdminPanel、审批、日志、配置治理</span><em class="tag">治理层</em></button>
+            <button class="node type-govern" data-id="storage" type="button"><strong>状态仓库</strong><span>config、manifest、VCPAsyncResults、缓存与数据库</span><em class="tag">运行状态</em></button>
+            <button class="node type-memory" data-id="memory" type="button"><strong>档案馆</strong><span>RAG、TagMemo、AIMemo、Time、附件召回</span><em class="tag">记忆系统</em></button>
+            <button class="node type-context" data-id="context" type="button"><strong>会议秘书</strong><span>ContextBridge、FoldingStore、上下文折叠</span><em class="tag">上下文状态</em></button>
+            <button class="node type-tool" data-id="parser" type="button"><strong>工具单识别</strong><span>识别 VCP 工具块，区分普通回复和工具请求</span><em class="tag">toolCallParser</em></button>
+
+            <button class="node type-remote" data-id="remote" type="button"><strong>远程分馆与物流</strong><span>分布式节点、ChromeBridge、跨节点 file:// 回源</span><em class="tag">WebSocket / FileFetcher</em></button>
+            <button class="node type-tool" data-id="plugin" type="button"><strong>行会总管</strong><span>插件发现、生命周期、审批、执行分发</span><em class="tag">PluginManager</em></button>
+            <button class="node type-tool" data-id="tools" type="button"><strong>工具窗口</strong><span>同步、异步、service、hybridservice 插件</span><em class="tag">Plugin/*</em></button>
+            <button class="node type-tool" data-id="executor" type="button"><strong>工具单执行</strong><span>注入 river / vref，再调用插件</span><em class="tag">toolExecutor</em></button>
+
+            <button class="node type-context" data-id="bridge" type="button"><strong>上下文桥</strong><span>把档案馆的上下文状态开放给工具和折叠插件</span><em class="tag">ContextBridge</em></button>
+            <button class="node type-govern" data-id="admin" type="button"><strong>城市控制台</strong><span>配置插件、RAG、DynamicTools、Agent 和审批规则</span><em class="tag">routes/admin*</em></button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="side-stack">
+        <section class="detail-panel" aria-live="polite">
+          <div class="detail-kicker" id="detail-kicker">当前模块</div>
+          <h2 class="detail-title" id="detail-title">翻译局</h2>
+          <p class="detail-desc" id="detail-desc"></p>
+          <div class="detail-grid">
+            <div class="fact-row">
+              <b>生活化理解</b>
+              <p id="detail-metaphor"></p>
+            </div>
+            <div class="fact-row">
+              <b>它解决的问题</b>
+              <p id="detail-job"></p>
+            </div>
+            <div class="fact-row">
+              <b>关系</b>
+              <ul id="detail-relations"></ul>
+            </div>
+            <div class="fact-row">
+              <b>源码位置</b>
+              <div class="source-list" id="detail-sources"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="route-panel">
+          <h2>概念检索</h2>
+          <div class="search-box">
+            <input id="search" type="search" placeholder="搜索 TagMemo、Plugin、分布式、审批...">
+            <button class="small-btn" id="reset" type="button">重置</button>
+          </div>
+          <div class="mini-list" id="mini-list"></div>
+        </section>
+
+        <section class="source-panel">
+          <h2>读图口诀</h2>
+          <div class="path-grid">
+            <article class="path-card">
+              <h3>主街道</h3>
+              <p>请求进入城门，经过翻译局和档案馆，交给模型，再根据是否有工具单决定是否回路。</p>
+            </article>
+            <article class="path-card">
+              <h3>档案馆</h3>
+              <p>长期知识、标签联想、附件召回、上下文折叠都在这里，不是模型凭空记住。</p>
+            </article>
+            <article class="path-card">
+              <h3>工具行会</h3>
+              <p>工具不是提示词附属品，而是有 manifest、审批、执行、返回和分布式上下线的机构。</p>
+            </article>
+            <article class="path-card">
+              <h3>市政系统</h3>
+              <p>配置、日志、审批、AdminPanel、WebSocket 决定城市能否稳定、安全地运行。</p>
+            </article>
+          </div>
+        </section>
+      </aside>
+    </section>
+
+    <section class="below">
+      <section class="route-panel">
+        <h2>三条学习路线</h2>
+        <div class="path-grid">
+          <article class="path-card">
+            <h3>使用者路线</h3>
+            <p>城门 -> 翻译局 -> 智能货架 -> 档案馆。先掌握 Agent、DynamicTools、RAG 和工具块。</p>
+          </article>
+          <article class="path-card">
+            <h3>造工具路线</h3>
+            <p>工具单识别 -> 工具单执行 -> 行会总管 -> 工具窗口。重点看 manifest、参数、审批和返回格式。</p>
+          </article>
+          <article class="path-card">
+            <h3>维护者路线</h3>
+            <p>总调度室 -> 翻译局 -> 档案馆 -> 行会总管 -> 市政厅。按链路定位故障，不要直接猜插件问题。</p>
+          </article>
+          <article class="path-card">
+            <h3>分布式路线</h3>
+            <p>行会总管 -> 城际总站 -> 远程分馆 -> 物流回源。关注 VCP_Key、register_tools、tool_result 和 file://。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="source-panel">
+        <h2>源码索引</h2>
+        <table class="source-table">
+          <thead>
+            <tr>
+              <th>系统</th>
+              <th>关键文件</th>
+              <th>用途</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>入口</td><td><code>server.js</code><br><code>modules/chatCompletionHandler.js</code></td><td>API、鉴权、聊天主流程</td></tr>
+            <tr><td>提示词</td><td><code>modules/messageProcessor.js</code><br><code>modules/agentManager.js</code></td><td>Agent、变量、ToolBox、DynamicTools 注入</td></tr>
+            <tr><td>记忆</td><td><code>Plugin/RAGDiaryPlugin/</code><br><code>KnowledgeBaseManager.js</code><br><code>TagMemoEngine.js</code></td><td>RAG、TagMemo、AIMemo、上下文桥</td></tr>
+            <tr><td>工具</td><td><code>modules/vcpLoop/toolCallParser.js</code><br><code>modules/vcpLoop/toolExecutor.js</code><br><code>Plugin.js</code></td><td>工具协议解析、river/vref、插件执行</td></tr>
+            <tr><td>分布式</td><td><code>WebSocketServer.js</code><br><code>FileFetcherServer.js</code></td><td>远程节点、ChromeBridge、跨节点文件</td></tr>
+            <tr><td>治理</td><td><code>routes/admin*.js</code><br><code>modules/toolApprovalManager.js</code></td><td>AdminPanel、审批、配置和可观测</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </section>
+
+    <p class="footer-note">这个 HTML 是自包含动态文档，不依赖外部 CDN。Markdown 继续作为文字母本；这份地图负责帮助人快速看懂 VCP 的核心关系。</p>
+  </main>
+
+  <script>
+    const nodes = {
+      user: {
+        title: "用户与前端",
+        kind: "城市居民",
+        desc: "VCP 可以被 OpenWebUI、聊天前端、脚本或其他 API Client 当作 OpenAI 兼容服务调用。",
+        metaphor: "像居民从不同城门提交办事请求。",
+        job: "把外部问题送入 VCP 城市，但不直接处理记忆和工具。",
+        relations: ["进入城门", "接收最终回答"],
+        sources: ["OpenWebUI / API Client", "server.js"]
+      },
+      gate: {
+        title: "城门",
+        kind: "API 入口",
+        desc: "负责接收 OpenAI 兼容请求、鉴权、挂载路由和启动服务。",
+        metaphor: "像城市入口的验票口，先确认请求能不能进城。",
+        job: "处理 /v1/chat/completions、/v1/models、Admin 和 WebSocket 相关入口。",
+        relations: ["接收用户请求", "交给专用车道和总调度室", "受 config.env 影响"],
+        sources: ["server.js:606", "server.js:1139", "server.js:1604"]
+      },
+      route: {
+        title: "专用车道",
+        kind: "路由分流",
+        desc: "某些模型会被特殊路由接管，模型名也可能被 ModelRedirect 映射。",
+        metaphor: "像城市快速路和专用通道，特殊车辆不一定走普通街道。",
+        job: "在请求进入主聊天链路前做模型白名单透传、模型重定向和认证处理。",
+        relations: ["接在城门后", "影响后续是否进入 VCP 工具链"],
+        sources: ["routes/specialModelRouter.js", "modelRedirectHandler.js", "ModelRedirect.json"]
+      },
+      chat: {
+        title: "总调度室",
+        kind: "聊天编排",
+        desc: "组织一次聊天请求从变量展开、预处理、上游模型调用到工具回路的完整过程。",
+        metaphor: "像城市调度中心，决定请求先去哪、回来后怎么继续。",
+        job: "协调 messageProcessor、messagePreprocessor、LLM API、stream/non-stream 工具循环。",
+        relations: ["调用翻译局", "调用预处理链", "把模型输出交给工具单识别"],
+        sources: ["modules/chatCompletionHandler.js:312", "modules/handlers/streamHandler.js", "modules/handlers/nonStreamHandler.js"]
+      },
+      materials: {
+        title: "材料柜",
+        kind: "提示词材料",
+        desc: "保存 Agent、TVStxt、Var、Tar、SarPrompt 等可注入材料。",
+        metaphor: "像办事窗口背后的档案柜，里面放着身份说明、规则模板和长期文本。",
+        job: "给翻译局提供可展开的文本材料。",
+        relations: ["被 messageProcessor 读取", "被 AdminPanel 管理", "和 Agent / ToolBox 使用密切相关"],
+        sources: ["Agent/*.txt", "TVStxt/*.txt", "modules/agentManager.js", "modules/toolboxManager.js"]
+      },
+      message: {
+        title: "翻译局",
+        kind: "变量展开",
+        desc: "把 system prompt、Agent 和 TVStxt 里的占位符展开为模型真正看到的上下文。",
+        metaphor: "像把申请表里的“附上某人档案”和“列出相关工具”替换成实际材料。",
+        job: "展开 Agent、Var/Tar、SarPrompt、静态插件占位符和 DynamicTools。",
+        relations: ["读取材料柜", "请求 DynamicTools", "把整理后的消息交给预处理链"],
+        sources: ["modules/messageProcessor.js:37", "modules/messageProcessor.js:423", "modules/messageProcessor.js:490"]
+      },
+      dynamic: {
+        title: "智能工具货架",
+        kind: "DynamicTools",
+        desc: "根据当前任务动态挑选工具说明，避免把所有工具一次性塞进上下文。",
+        metaphor: "像聪明店员，只把这次可能用到的工具摆到柜台上。",
+        job: "按显式指令、分类、模型判断或向量方式选择工具说明。",
+        relations: ["从 PluginManager 同步工具", "被 messageProcessor 注入", "感知分布式工具上下线"],
+        sources: ["modules/dynamicToolRegistry.js:15", "modules/dynamicToolRegistry.js:450", "modules/dynamicToolRegistry.js:1216"]
+      },
+      pre: {
+        title: "资料整理员",
+        kind: "预处理链",
+        desc: "messagePreprocessor 插件可以在请求发给模型前改写消息、召回记忆或折叠上下文。",
+        metaphor: "像请求进会议室前的资料整理员，把资料、摘要和引用准备好。",
+        job: "执行 RAGDiaryPlugin、ContextFoldingV2 等预处理器。",
+        relations: ["接收翻译局结果", "调用档案馆", "把整理后上下文交给模型"],
+        sources: ["Plugin.js:370", "Plugin/RAGDiaryPlugin/RAGDiaryPlugin.js", "Plugin/ContextFoldingV2/ContextFoldingV2.js"]
+      },
+      memory: {
+        title: "档案馆",
+        kind: "记忆系统",
+        desc: "负责 RAG、TagMemo、AIMemo、Time、Base64Memo、Expand、Associate 等长期知识召回。",
+        metaphor: "像城市档案馆，不只是按标题找书，还能按主题、时间、附件和联想路径找资料。",
+        job: "从知识库和日记本里检索、重排、聚合并注入相关材料。",
+        relations: ["被预处理链调用", "依赖向量库和 TagMemoEngine", "给 ContextBridge 提供上下文状态"],
+        sources: ["Plugin/RAGDiaryPlugin/RAGDiaryPlugin.js", "KnowledgeBaseManager.js", "TagMemoEngine.js"]
+      },
+      context: {
+        title: "会议秘书",
+        kind: "上下文系统",
+        desc: "维护当前对话语义状态，并通过 ContextBridge、FoldingStore 和 ContextFoldingV2 控制长对话。",
+        metaphor: "像会议秘书，一边维护白板，一边把旧会议记录折成摘要。",
+        job: "保存上下文向量、折叠历史、开放只读语义状态给其他插件。",
+        relations: ["从 RAGDiaryPlugin 获取上下文向量", "通过 ContextBridge 给插件使用", "把折叠结果回到预处理链"],
+        sources: ["Plugin/RAGDiaryPlugin/ContextVectorManager.js", "Plugin/RAGDiaryPlugin/FoldingStore.js", "Plugin/RAGDiaryPlugin/RAGDiaryPlugin.js:4087"]
+      },
+      bridge: {
+        title: "上下文桥",
+        kind: "ContextBridge",
+        desc: "让其他插件不用重新造记忆系统，也能读取当前上下文状态。",
+        metaphor: "像城市内部共享的会议白板接口，其他部门可以看，但不必自己维护整块白板。",
+        job: "把上下文向量、FoldingStore 等能力注入给声明 requiresContextBridge 的插件。",
+        relations: ["来自 RAGDiaryPlugin", "注入到 ContextFoldingV2、LightMemo 等插件", "帮助工具理解当前语义重心"],
+        sources: ["Plugin.js:581", "Plugin/RAGDiaryPlugin/RAGDiaryPlugin.js:4087", "Plugin/ContextFoldingV2/plugin-manifest.json"]
+      },
+      llm: {
+        title: "模型大脑",
+        kind: "后端 LLM",
+        desc: "模型负责生成回答、决定是否需要工具、输出 VCP 工具块。",
+        metaphor: "像城市里的决策大脑，但它看到的是 VCP 整理后的材料和工具说明。",
+        job: "基于提示词、记忆和工具说明生成自然语言或工具请求。",
+        relations: ["接收预处理后的上下文", "输出普通回答或工具单", "工具结果回灌后继续生成"],
+        sources: ["API_URL", "API_Key", "modules/chatCompletionHandler.js"]
+      },
+      parser: {
+        title: "工具单识别",
+        kind: "工具协议",
+        desc: "识别模型输出中的 VCP 工具请求块，解析 tool_name、参数、archery、ink、river、vref。",
+        metaphor: "像检查模型写出的物流单，判断这是不是要派人办事。",
+        job: "把文本里的工具块解析成结构化工具调用。",
+        relations: ["接收模型输出", "没有工具单就直接回答", "有工具单就交给执行器"],
+        sources: ["modules/vcpLoop/toolCallParser.js:4", "modules/vcpLoop/toolCallParser.js:74", "modules/vcpLoop/toolCallParser.js:223"]
+      },
+      executor: {
+        title: "工具单执行",
+        kind: "执行前加工",
+        desc: "在调用插件前，根据 river 和 vref 给工具补充对话上下文或相关文件引用。",
+        metaphor: "像物流站给包裹附上会议纪要和档案馆调出的参考材料。",
+        job: "注入 river_context、vref_files，再交给 PluginManager 执行。",
+        relations: ["接收解析后的工具调用", "调用 PluginManager", "需要 RAG 上下文向量支持 vref"],
+        sources: ["modules/vcpLoop/toolExecutor.js:188", "modules/vcpLoop/toolExecutor.js:190", "modules/vcpLoop/toolExecutor.js:302"]
+      },
+      plugin: {
+        title: "行会总管",
+        kind: "PluginManager",
+        desc: "负责插件发现、配置合并、工具审批、同步/异步/服务/分布式执行分发。",
+        metaphor: "像城市工具行会总管，知道每家店在哪里、能做什么、是否需要盖章。",
+        job: "加载 manifest、构建工具说明、执行工具、注册服务路由和分布式工具。",
+        relations: ["从 DynamicTools 暴露工具说明", "执行本地或远程工具", "接入审批和 WebSocketServer"],
+        sources: ["Plugin.js:19", "Plugin.js:431", "Plugin.js:791", "Plugin.js:1265"]
+      },
+      tools: {
+        title: "工具窗口",
+        kind: "插件生态",
+        desc: "VCP 插件可以是同步窗口、异步长工单、常驻服务或混合服务。",
+        metaphor: "像城市里不同类型的办事窗口：有的当场办，有的排长工单，有的是常驻部门。",
+        job: "真正执行计算、搜索、浏览器控制、文件处理、外部服务调用等任务。",
+        relations: ["由 PluginManager 调度", "受 manifest 和 config.env 控制", "可被审批规则保护"],
+        sources: ["Plugin/*/plugin-manifest.json", "Plugin.js:959", "Plugin.js:1206"]
+      },
+      remote: {
+        title: "远程分馆与物流",
+        kind: "分布式系统",
+        desc: "远程节点通过 WebSocket 注册工具，主服务器可以调度远程工具并回源远程文件。",
+        metaphor: "像外地分馆加入主城地图，主城能派单，也能从分馆调档案。",
+        job: "处理 register_tools、execute_tool、tool_result、ChromeBridge 和 file:// 回源。",
+        relations: ["与 PluginManager 双向协作", "被 DynamicTools 感知上下线", "通过 FileFetcher 解决远程文件"],
+        sources: ["WebSocketServer.js:21", "WebSocketServer.js:560", "WebSocketServer.js:623", "FileFetcherServer.js:43"]
+      },
+      govern: {
+        title: "市政厅",
+        kind: "治理层",
+        desc: "管理配置、审批、日志、插件开关、RAG 参数和 DynamicTools 状态。",
+        metaphor: "像城市治理中心，决定哪些机构能开门、哪些操作要盖章、哪些日志要广播。",
+        job: "提供 AdminPanel、ToolApproval、VCPLog、ShowVCP、配置管理。",
+        relations: ["控制 PluginManager", "影响 RAG 和 DynamicTools", "通过 WebSocket 广播状态"],
+        sources: ["routes/adminPanelRoutes.js", "routes/admin/*.js", "modules/toolApprovalManager.js"]
+      },
+      storage: {
+        title: "状态仓库",
+        kind: "配置与缓存",
+        desc: "VCP 的很多行为由配置、manifest、异步结果、缓存和数据库共同决定。",
+        metaphor: "像城市档案库和仓库，规则、工单、缓存、运行结果都在这里。",
+        job: "保存 config.env、plugin config、manifest、VCPAsyncResults、FoldingStore、file cache 等状态。",
+        relations: ["被城门、插件、RAG 和 AdminPanel 读取", "排障时不能只看代码"],
+        sources: ["config.env", "Plugin/*/config.env", "VCPAsyncResults/", "Plugin/RAGDiaryPlugin/folding_store.db"]
+      },
+      admin: {
+        title: "城市控制台",
+        kind: "AdminPanel",
+        desc: "通过管理面板查看和修改配置、插件、RAG、DynamicTools、Agent、ToolBox 和审批规则。",
+        metaphor: "像城市控制台，可以调交通灯、开关店铺、查看日志和修改市政规则。",
+        job: "提供管理 API 与静态面板，用于运维和配置。",
+        relations: ["调用 routes/admin*", "影响 PluginManager、RAG、DynamicTools 和工具审批"],
+        sources: ["routes/adminPanelRoutes.js:34", "routes/admin/config.js", "routes/admin/plugins.js", "routes/admin/dynamicTools.js"]
+      },
+      final: {
+        title: "最终回答",
+        kind: "输出",
+        desc: "如果模型没有工具请求，就直接回答；如果有工具请求，结果回灌后再生成最终回答。",
+        metaphor: "像办事流程结束后给居民的正式回执。",
+        job: "把 VCP 城市处理后的结果返回给用户。",
+        relations: ["来自模型", "可能经历多轮工具回路", "受 ShowVCP 和 ink 影响历史可见性"],
+        sources: ["modules/handlers/streamHandler.js", "modules/handlers/nonStreamHandler.js"]
+      }
+    };
+
+    const edges = [
+      ["user", "gate", "request"], ["gate", "route", "request"], ["route", "chat", "request"],
+      ["chat", "message", "request"], ["message", "pre", "request"], ["pre", "llm", "request"],
+      ["llm", "parser", "request"], ["parser", "final", "request"],
+      ["materials", "message", "request"], ["dynamic", "message", "tool"],
+      ["pre", "memory", "memory"], ["memory", "context", "memory"], ["context", "pre", "memory"],
+      ["memory", "bridge", "memory"], ["bridge", "plugin", "memory"], ["storage", "memory", "memory"],
+      ["parser", "executor", "tool"], ["executor", "plugin", "tool"], ["plugin", "tools", "tool"],
+      ["tools", "llm", "tool"], ["plugin", "dynamic", "tool"],
+      ["plugin", "remote", "remote"], ["remote", "plugin", "remote"], ["remote", "storage", "remote"],
+      ["govern", "admin", "govern"], ["admin", "plugin", "govern"], ["admin", "memory", "govern"],
+      ["admin", "dynamic", "govern"], ["govern", "storage", "govern"], ["govern", "gate", "govern"]
+    ];
+
+    const lineColors = {
+      request: "var(--entry)",
+      memory: "var(--memory)",
+      tool: "var(--tool)",
+      remote: "var(--remote)",
+      govern: "var(--govern)"
+    };
+
+    const map = document.getElementById("map");
+    const svg = document.getElementById("lines");
+    const nodeEls = [...document.querySelectorAll(".node")];
+    const modeButtons = [...document.querySelectorAll(".mode-btn")];
+    const miniList = document.getElementById("mini-list");
+    const searchInput = document.getElementById("search");
+    const resetButton = document.getElementById("reset");
+    let activeNode = "message";
+    let activeFlow = "all";
+
+    function centerOf(el) {
+      const mapRect = map.getBoundingClientRect();
+      const rect = el.getBoundingClientRect();
+      return {
+        x: rect.left - mapRect.left + rect.width / 2,
+        y: rect.top - mapRect.top + rect.height / 2
+      };
+    }
+
+    function drawLines() {
+      svg.innerHTML = "";
+      const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+      Object.entries(lineColors).forEach(([flow, color]) => {
+        const marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+        marker.setAttribute("id", "arrow-" + flow);
+        marker.setAttribute("viewBox", "0 0 10 10");
+        marker.setAttribute("refX", "8");
+        marker.setAttribute("refY", "5");
+        marker.setAttribute("markerWidth", "6");
+        marker.setAttribute("markerHeight", "6");
+        marker.setAttribute("orient", "auto-start-reverse");
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", "M 0 0 L 10 5 L 0 10 z");
+        path.setAttribute("fill", color);
+        marker.appendChild(path);
+        defs.appendChild(marker);
+      });
+      svg.appendChild(defs);
+
+      edges.forEach(([from, to, flow]) => {
+        const fromEl = document.querySelector(`[data-id="${from}"]`);
+        const toEl = document.querySelector(`[data-id="${to}"]`);
+        if (!fromEl || !toEl) return;
+        const a = centerOf(fromEl);
+        const b = centerOf(toEl);
+        const midX = (a.x + b.x) / 2;
+        const curve = Math.max(28, Math.min(90, Math.abs(a.x - b.x) * .22 + Math.abs(a.y - b.y) * .10));
+        const d = `M ${a.x} ${a.y} C ${midX} ${a.y + curve}, ${midX} ${b.y - curve}, ${b.x} ${b.y}`;
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", d);
+        path.setAttribute("class", `flow-line ${flow}`);
+        path.setAttribute("data-flow", flow);
+        path.setAttribute("marker-end", `url(#arrow-${flow})`);
+        svg.appendChild(path);
+      });
+
+      applyFlow();
+    }
+
+    function setDetail(id) {
+      activeNode = id;
+      const data = nodes[id];
+      document.getElementById("detail-kicker").textContent = data.kind;
+      document.getElementById("detail-title").textContent = data.title;
+      document.getElementById("detail-desc").textContent = data.desc;
+      document.getElementById("detail-metaphor").textContent = data.metaphor;
+      document.getElementById("detail-job").textContent = data.job;
+      document.getElementById("detail-relations").innerHTML = data.relations.map(item => `<li>${item}</li>`).join("");
+      document.getElementById("detail-sources").innerHTML = data.sources.map(item => `<span class="source-chip">${item}</span>`).join("");
+
+      const related = new Set([id]);
+      edges.forEach(([from, to]) => {
+        if (from === id) related.add(to);
+        if (to === id) related.add(from);
+      });
+
+      nodeEls.forEach(el => {
+        const isActive = el.dataset.id === id;
+        const isRelated = related.has(el.dataset.id);
+        el.classList.toggle("active", isActive);
+        el.classList.toggle("dim", !isRelated);
+      });
+
+      [...document.querySelectorAll(".mini-item")].forEach(item => {
+        item.classList.toggle("active", item.dataset.id === id);
+      });
+    }
+
+    function applyFlow() {
+      const lines = [...document.querySelectorAll(".flow-line")];
+      lines.forEach(line => {
+        const match = activeFlow === "all" || line.dataset.flow === activeFlow;
+        line.classList.toggle("active", match);
+        line.classList.toggle("dim", !match);
+      });
+
+      if (activeFlow === "all") {
+        nodeEls.forEach(el => el.classList.remove("dim"));
+        return;
+      }
+
+      const flowNodes = new Set();
+      edges.forEach(([from, to, flow]) => {
+        if (flow === activeFlow) {
+          flowNodes.add(from);
+          flowNodes.add(to);
+        }
+      });
+      nodeEls.forEach(el => el.classList.toggle("dim", !flowNodes.has(el.dataset.id)));
+    }
+
+    function renderMiniList(query = "") {
+      const q = query.trim().toLowerCase();
+      const items = Object.entries(nodes)
+        .filter(([id, data]) => {
+          const hay = [id, data.title, data.kind, data.desc, data.job, ...data.sources].join(" ").toLowerCase();
+          return !q || hay.includes(q);
+        })
+        .map(([id, data]) => `
+          <button class="mini-item ${id === activeNode ? "active" : ""}" data-id="${id}" type="button">
+            <b>${data.title}</b>
+            <span>${data.kind} · ${data.sources[0]}</span>
+          </button>
+        `)
+        .join("");
+      miniList.innerHTML = items || `<div class="mini-item"><b>没有匹配项</b><span>换一个关键词试试。</span></div>`;
+      [...miniList.querySelectorAll(".mini-item[data-id]")].forEach(item => {
+        item.addEventListener("click", () => setDetail(item.dataset.id));
+      });
+    }
+
+    nodeEls.forEach(el => {
+      el.addEventListener("click", () => setDetail(el.dataset.id));
+    });
+
+    modeButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        activeFlow = btn.dataset.flow;
+        modeButtons.forEach(other => other.classList.toggle("active", other === btn));
+        applyFlow();
+      });
+    });
+
+    searchInput.addEventListener("input", event => renderMiniList(event.target.value));
+    resetButton.addEventListener("click", () => {
+      searchInput.value = "";
+      activeFlow = "all";
+      modeButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.flow === "all"));
+      renderMiniList();
+      setDetail("message");
+      drawLines();
+    });
+
+    window.addEventListener("resize", () => {
+      window.clearTimeout(window.__vcpMapResize);
+      window.__vcpMapResize = window.setTimeout(drawLines, 120);
+    });
+
+    renderMiniList();
+    setDetail("message");
+    requestAnimationFrame(drawLines);
+  </script>
+</body>
+</html>

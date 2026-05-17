@@ -1,0 +1,2244 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="VCPToolBox 更新日志、源码解读与 Agent 提示词档案">
+      
+      
+        <meta name="author" content="VCP Maintainer">
+      
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../99-blindspots/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>内容审核报告 2026-05-16 - VCP 知识站</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#vcp" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="VCP 知识站" class="md-header__button md-logo" aria-label="VCP 知识站" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            VCP 知识站
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              内容审核报告 2026-05-16
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="cyan"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="cyan"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="分享" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../reading-routes/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  阅读路线
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../vcp-system/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  VCP 系统解读
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../changelog/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  更新日志
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../agents/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Agent 提示词档案
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  审核与复盘
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../deploy/github-pages/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  部署
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="VCP 知识站" class="md-nav__button md-logo" aria-label="VCP 知识站" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    VCP 知识站
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reading-routes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    阅读路线
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../vcp-system/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VCP 系统解读
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    VCP 系统解读
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vcp-system/01-system-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    系统全景
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vcp-system/02-placeholders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    变量与占位符体系
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vcp-system/03-context-folding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    上下文折叠体系
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vcp-system/04-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    记忆系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vcp-system/05-tool-protocol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工具调用协议
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vcp-system/06-plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    插件生态
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vcp-system/07-agent-prompt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent 提示词工程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vcp-system/08-message-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    消息处理管线
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vcp-system/09-multi-agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    多 Agent 协同体系
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vcp-system/10-distributed-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    分布式与安全
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vcp-system/11-agent-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent 配置建议
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vcp-system/12-prompt-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    提示词架构优化方案
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vcp-system/14-deep-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VCP 系统深度导读
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vcp-system/15-human-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VCP 概念学习手册
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vcp-system/16-agent-ops-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VCP 源码导航与运维手册
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../changelog/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    更新日志
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    更新日志
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/2026-05-12-vcp-update/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026-05-12 VCP 更新
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/xiaoke-v4.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    XiaoKe v4.0 更新
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent 提示词档案
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agent 提示词档案
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    审核与复盘
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    审核与复盘
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    内容审核报告 2026-05-16
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    内容审核报告 2026-05-16
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一、结论摘要
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二、高优先级问题
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、高优先级问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p0thinking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P0：&lt;thinking&gt; 工具调用隔离结论与源码不一致
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1：插件数量与类型统计过期
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p1vcptavern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1：VCPTavern 类型表述不准确
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1：分布式路由说明引用了错误代码段
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三、中优先级问题
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三、中优先级问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p211-agentmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2：11-Agent配置建议.md 与当前样本版本错位
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p2aimemo06" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2：AIMemo:0.6 的“语义标注”写法容易误导维护者
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p2tagmemo-rerank" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2：TagMemo+ 建议方向正确，但“不再使用 Rerank”表述偏绝对
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p200-md" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2：00-总索引.md 的文档数量描述过期
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四、确认基本可靠的内容
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        五、建议修订顺序
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        六、后续可执行项
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="六、后续可执行项">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. 纯文档修订
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. 源码安全修正
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../99-blindspots/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    系统联动全景与盲区分析
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    部署
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    部署
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deploy/github-pages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    部署到 GitHub Pages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一、结论摘要
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二、高优先级问题
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、高优先级问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p0thinking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P0：&lt;thinking&gt; 工具调用隔离结论与源码不一致
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1：插件数量与类型统计过期
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p1vcptavern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1：VCPTavern 类型表述不准确
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1：分布式路由说明引用了错误代码段
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三、中优先级问题
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三、中优先级问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p211-agentmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2：11-Agent配置建议.md 与当前样本版本错位
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p2aimemo06" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2：AIMemo:0.6 的“语义标注”写法容易误导维护者
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p2tagmemo-rerank" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2：TagMemo+ 建议方向正确，但“不再使用 Rerank”表述偏绝对
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p200-md" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2：00-总索引.md 的文档数量描述过期
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四、确认基本可靠的内容
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        五、建议修订顺序
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        六、后续可执行项
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="六、后续可执行项">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. 纯文档修订
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. 源码安全修正
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+                  
+
+
+
+<h1 id="vcp">VCP 功能及源码解读文档审核报告<a class="headerlink" href="#vcp" title="Permanent link">&para;</a></h1>
+<p><strong>审核日期</strong>：2026-05-16<br />
+<strong>审核范围</strong>：<code>更新日志/vcp功能及源码解读/</code> 主文档与 <code>agent提示词/</code> 样本<br />
+<strong>审核方式</strong>：只读核验；对照当前工作区源码、插件 manifest 与关键运行链路。  </p>
+<hr />
+<h2 id="_1">一、结论摘要<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>这套文档的总体结构是可用的：<code>01-07</code> 解释静态机制，<code>08-10</code> 补足动态联动，<code>11-12</code> 把机制转成 Agent 配置与提示词架构建议，<code>99</code> 作为盲区回顾。文档的主脉络清晰，尤其是变量替换、TagMemo+、VCPTavern 优先执行、消息管线等方向基本抓住了 VCP 的关键。</p>
+<p>但当前文档已经出现几处需要优先修正的硬事实偏差：</p>
+<ol>
+<li><code>&lt;thinking&gt;</code> 与 <code>&lt;think&gt;</code> 标签混用，且工具解析安全语义被写反。</li>
+<li>插件数量、插件类型统计明显过期。</li>
+<li><code>VCPTavern</code> 的插件类型表述不准确。</li>
+<li>分布式/Chrome/hybridservice 路由说明引用了错误代码段。</li>
+<li><code>11-Agent配置建议.md</code> 与当前样本文档版本有明显时序错位。</li>
+</ol>
+<p>建议先修正文档事实，再进入提示词优化建议落地。否则后续 Agent 配置会建立在不稳定口径上。</p>
+<hr />
+<h2 id="_2">二、高优先级问题<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h3 id="p0thinking">P0：<code>&lt;thinking&gt;</code> 工具调用隔离结论与源码不一致<a class="headerlink" href="#p0thinking" title="Permanent link">&para;</a></h3>
+<p><strong>涉及文档</strong>
+- <code>05-工具调用协议.md:132-143</code>
+- <code>08-消息处理管线.md:42</code>
+- <code>07-Agent提示词工程.md:89-131</code>
+- <code>12-提示词架构优化方案.md:35-37, 226-271, 472-500</code>
+- <code>agent提示词/*.txt</code> 中大量 <code>&lt;thinking&gt;</code> 规则与 Few-Shot</p>
+<p><strong>文档当前说法</strong></p>
+<p>文档说工具解析前会移除 <code>&lt;thinking&gt;</code> 块，因此 LLM 不能在 <code>&lt;thinking&gt;</code> 中做工具调用。</p>
+<p><strong>源码事实</strong></p>
+<p><code>modules/vcpLoop/toolCallParser.js:28</code> 实际代码是：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">contentWithoutThink</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">content</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;think&gt;[\s\S]*?&lt;\/think&gt;/g</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+</code></pre></div>
+<p>也就是说，当前工具解析器只移除 <code>&lt;think&gt;...&lt;/think&gt;</code>，不移除 <code>&lt;thinking&gt;...&lt;/thinking&gt;</code>。</p>
+<p><strong>风险</strong></p>
+<p>如果 Agent 按文档使用 <code>&lt;thinking&gt;</code>，并在其中误写 <code>&lt;&lt;&lt;[TOOL_REQUEST]&gt;&gt;&gt;</code>，当前 parser 仍可能解析并执行该工具调用。这不是纯文档风格问题，而是工具执行边界问题。</p>
+<p><strong>建议</strong></p>
+<p>二选一，建议优先方案 A：</p>
+<ul>
+<li>方案 A：修源码，让 parser 同时移除 <code>&lt;think&gt;</code> 与 <code>&lt;thinking&gt;</code>。然后文档保持 <code>&lt;thinking&gt;</code> 规范。</li>
+<li>方案 B：统一文档与 Agent 提示词，全部改成 <code>&lt;think&gt;</code>，并说明 VChat 渲染是否支持该标签。</li>
+</ul>
+<p>在未修正前，<code>05</code> 和 <code>08</code> 不能继续声称 <code>&lt;thinking&gt;</code> 内工具调用会被忽略。</p>
+<hr />
+<h3 id="p1">P1：插件数量与类型统计过期<a class="headerlink" href="#p1" title="Permanent link">&para;</a></h3>
+<p><strong>涉及文档</strong>
+- <code>01-系统全景.md:30-31</code>
+- <code>06-插件生态.md:9, 18-29, 228</code>
+- <code>99-系统联动全景与盲区分析.md:16</code>
+- <code>00-总索引.md:197</code></p>
+<p><strong>文档当前口径</strong></p>
+<p>文档中混用了这些数字：</p>
+<ul>
+<li>87 个插件目录、79 个活跃插件、8 个禁用插件</li>
+<li>95+ 活跃插件</li>
+<li>54 插件分类</li>
+<li>8 份文档约 2500 行</li>
+</ul>
+<p><strong>当前工作区核验结果</strong></p>
+<p>实际扫描 <code>Plugin/</code> 得到：</p>
+<div class="highlight"><pre><span></span><code>PluginDirs=107
+ActiveManifests=96
+BlockedManifests=11
+
+asynchronous=2
+hybridservice=10
+messagePreprocessor=4
+service=5
+static=14
+synchronous=61
+</code></pre></div>
+<p><strong>风险</strong></p>
+<p>插件生态文档是后续审核工具能力、权限边界和 Agent 工具挂载的基础。如果数量口径不统一，会导致“哪些插件可用”“哪些是禁用态”“哪些类型需要安全审查”都失真。</p>
+<p><strong>建议</strong></p>
+<p>在 <code>06-插件生态.md</code> 中新增“统计时间/统计命令”，统一当前口径：</p>
+<div class="highlight"><pre><span></span><code>截至 2026-05-16 当前工作区：
+107 个 Plugin 子目录，96 个活跃 manifest，11 个禁用 manifest。
+按 pluginType：synchronous 61、static 14、hybridservice 10、service 5、messagePreprocessor 4、asynchronous 2。
+</code></pre></div>
+<p>同时在 <code>01</code>、<code>00</code>、<code>99</code> 中避免写死旧数量，或标注“历史快照”。</p>
+<hr />
+<h3 id="p1vcptavern">P1：<code>VCPTavern</code> 类型表述不准确<a class="headerlink" href="#p1vcptavern" title="Permanent link">&para;</a></h3>
+<p><strong>涉及文档</strong>
+- <code>09-多Agent协同体系.md:57</code>
+- <code>06-插件生态.md:178</code>
+- <code>08-消息处理管线.md:55-69</code></p>
+<p><strong>文档当前说法</strong></p>
+<p><code>09</code> 称 <code>VCPTavern</code> 类型是 <code>messagePreprocessor</code>，<code>06</code> 将其列为 <code>service</code>。</p>
+<p><strong>源码事实</strong></p>
+<p><code>Plugin/VCPTavern/plugin-manifest.json:7</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;pluginType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hybridservice&quot;</span>
+</code></pre></div>
+<p><code>Plugin.js:494-497</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">isPreprocessor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">manifest</span><span class="p">.</span><span class="nx">pluginType</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;messagePreprocessor&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">manifest</span><span class="p">.</span><span class="nx">pluginType</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;hybridservice&#39;</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">isService</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">manifest</span><span class="p">.</span><span class="nx">pluginType</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;service&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">manifest</span><span class="p">.</span><span class="nx">pluginType</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;hybridservice&#39;</span><span class="p">;</span>
+</code></pre></div>
+<p>即：<code>VCPTavern</code> 是 <code>hybridservice</code>，并因加载器规则同时进入 <code>messagePreprocessors</code> 与 service 初始化路径。</p>
+<p><strong>建议</strong></p>
+<p>统一改成：</p>
+<blockquote>
+<p><code>VCPTavern</code> 的 manifest 类型是 <code>hybridservice</code>。加载器会将 <code>hybridservice</code> 同时视作可直接调用服务与消息预处理器，因此它能作为硬编码优先预处理器执行。</p>
+</blockquote>
+<p>这样比直接写 <code>messagePreprocessor</code> 更精确。</p>
+<hr />
+<h3 id="p1_1">P1：分布式路由说明引用了错误代码段<a class="headerlink" href="#p1_1" title="Permanent link">&para;</a></h3>
+<p><strong>涉及文档</strong>
+- <code>10-分布式与安全.md:24-35</code></p>
+<p><strong>文档当前说法</strong></p>
+<p>文档称 <code>Plugin.js:870-872</code> 表示 distributed 协议会转发到远程节点，并引用了：</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">plugin</span><span class="p">.</span><span class="nx">pluginType</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;hybridservice&#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">plugin</span><span class="p">.</span><span class="nx">communication</span><span class="o">?</span><span class="p">.</span><span class="nx">protocol</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;direct&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">resultFromPlugin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">webSocketServer</span><span class="p">.</span><span class="nx">forwardCommandToChrome</span><span class="p">(</span><span class="nx">command</span><span class="p">,</span><span class="w"> </span><span class="nx">args</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>源码事实</strong></p>
+<p><code>Plugin.js:854-860</code> 才是分布式工具：</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">plugin</span><span class="p">.</span><span class="nx">isDistributed</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">resultFromPlugin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">webSocketServer</span><span class="p">.</span><span class="nx">executeDistributedTool</span><span class="p">(</span><span class="nx">plugin</span><span class="p">.</span><span class="nx">serverId</span><span class="p">,</span><span class="w"> </span><span class="nx">toolName</span><span class="p">,</span><span class="w"> </span><span class="nx">pluginSpecificArgs</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>Plugin.js:862-870</code> 是 <code>ChromeControl</code> 特殊路径。<br />
+<code>Plugin.js:872+</code> 是本地 <code>hybridservice + direct</code> 调用路径。</p>
+<p><strong>风险</strong></p>
+<p>这会误导安全审查：分布式工具、Chrome 控制、hybridservice direct 是三个不同执行面，权限和攻击面不同，不能混写。</p>
+<p><strong>建议</strong></p>
+<p><code>10</code> 中拆成三段：</p>
+<ol>
+<li>分布式：<code>plugin.isDistributed</code> → <code>executeDistributedTool()</code></li>
+<li>ChromeControl：工具名为 <code>ChromeControl</code> 且 <code>direct</code> → <code>forwardCommandToChrome()</code></li>
+<li>本地 hybridservice：<code>pluginType === 'hybridservice' &amp;&amp; protocol === 'direct'</code></li>
+</ol>
+<hr />
+<h2 id="_3">三、中优先级问题<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h3 id="p211-agentmd">P2：<code>11-Agent配置建议.md</code> 与当前样本版本错位<a class="headerlink" href="#p211-agentmd" title="Permanent link">&para;</a></h3>
+<p><strong>涉及文档</strong>
+- <code>11-Agent配置建议.md</code>
+- <code>agent提示词/小娜_v4.0_20260514.txt</code>
+- <code>agent提示词/小程 3.7.2.txt</code>
+- <code>agent提示词/小绝 3.7.3.txt</code>
+- <code>agent提示词/Weiming - 副本.txt</code></p>
+<p><strong>现象</strong></p>
+<p><code>11</code> 仍按 v3.1.x / 固定 <code>TagMemo0.65/0.5/0.55</code> 的状态描述 6 个 Agent。<br />
+但当前样本中，小娜 v4.0、小程 3.7.2、小绝 3.7.3、Weiming 副本都已经大量使用 <code>TagMemo+</code>、聚合日记引用与新的模块化结构。</p>
+<p><strong>建议</strong></p>
+<p>将 <code>11</code> 改成“历史审查快照”，或升级为两栏：</p>
+<p>| Agent | 旧版问题 | 当前样本状态 | 仍待处理 |</p>
+<p>例如小程：</p>
+<ul>
+<li>旧版建议：缺 <code>{{VCPTavern::dailychat}}</code></li>
+<li>当前样本：仍未发现 <code>{{VCPTavern::dailychat}}</code></li>
+<li>当前样本：已迁移 <code>TagMemo+</code></li>
+<li>当前样本：仍未发现 <code>&lt;&lt;VCP开发日记本&gt;&gt;</code></li>
+</ul>
+<p>这样可以保留历史价值，同时避免读者以为所有问题仍是当前事实。</p>
+<hr />
+<h3 id="p2aimemo06">P2：<code>AIMemo:0.6</code> 的“语义标注”写法容易误导维护者<a class="headerlink" href="#p2aimemo06" title="Permanent link">&para;</a></h3>
+<p><strong>涉及文档</strong>
+- <code>12-提示词架构优化方案.md:118-138</code>
+- <code>agent提示词/*.txt</code></p>
+<p><strong>源码事实</strong></p>
+<p><code>RAGDiaryPlugin.js:1492</code> 等位置使用：</p>
+<div class="highlight"><pre><span></span><code><span class="nx">modifiers</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/::AIMemo(?::([\w-]+))?/</span><span class="p">)</span>
+</code></pre></div>
+<p>这个正则不会把 <code>0.6</code> 作为完整预设名捕获，文档对此已有说明。</p>
+<p><strong>风险</strong></p>
+<p>虽然 <code>12</code> 已说明 <code>0.6/0.3</code> 不是机器阈值，但模板仍继续推荐 <code>::AIMemo:0.6</code>。维护者可能误以为这是可执行阈值配置。</p>
+<p><strong>建议</strong></p>
+<p>推荐模板中改成更不易误解的写法：</p>
+<div class="highlight"><pre><span></span><code>[[...::AIMemo]] &lt;!-- 语义目标：公共记忆高相关度 --&gt;
+</code></pre></div>
+<p>或使用真实预设名：</p>
+<div class="highlight"><pre><span></span><code>[[...::AIMemo:PublicHigh]]
+</code></pre></div>
+<p>如果坚持保留 <code>AIMemo:0.6</code>，必须在模板旁边加粗注明：<strong>该小数不会被系统解析为阈值</strong>。</p>
+<hr />
+<h3 id="p2tagmemo-rerank">P2：<code>TagMemo+</code> 建议方向正确，但“不再使用 Rerank”表述偏绝对<a class="headerlink" href="#p2tagmemo-rerank" title="Permanent link">&para;</a></h3>
+<p><strong>涉及文档</strong>
+- <code>12-提示词架构优化方案.md:306-320</code></p>
+<p><strong>源码事实</strong></p>
+<p><code>RAGDiaryPlugin.js:2358-2363</code> 支持 <code>Rerank</code> / <code>Rerank+</code>。<br />
+<code>RAGDiaryPlugin.js:2371-2384</code> 支持 <code>TagMemo+</code> 测地线重排。<br />
+两者不是互斥机制，源码也支持叠加。</p>
+<p><strong>建议</strong></p>
+<p>把“通常 <code>TagMemo+</code> 单独使用已足够”保留为经验建议，但避免写成原则性替代。更稳妥表述：</p>
+<blockquote>
+<p>默认优先 <code>TagMemo+</code>；当召回候选质量高但排序仍不稳定，或需要 cross-encoder 语义精排时，再叠加 <code>::Rerank</code> / <code>::Rerank+</code>。</p>
+</blockquote>
+<hr />
+<h3 id="p200-md">P2：<code>00-总索引.md</code> 的文档数量描述过期<a class="headerlink" href="#p200-md" title="Permanent link">&para;</a></h3>
+<p><strong>涉及文档</strong>
+- <code>00-总索引.md:197</code></p>
+<p><strong>问题</strong></p>
+<p>文末仍写“8 份文档总计约 2500 行”，但当前目录已有 14 个主 Markdown 文档，另有多份 Agent 提示词样本。</p>
+<p><strong>建议</strong></p>
+<p>改成：</p>
+<blockquote>
+<p>当前目录包含 14 个主 Markdown 文档与若干 Agent 提示词样本；行数以当前文件统计为准。</p>
+</blockquote>
+<hr />
+<h2 id="_4">四、确认基本可靠的内容<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>以下内容经过第一轮抽查，方向基本可靠：</p>
+<ol>
+<li>
+<p><strong>VCPTavern 优先执行顺序</strong><br />
+<code>chatCompletionHandler.js:531-541</code> 确实在变量替换前优先调用 <code>VCPTavern</code>。</p>
+</li>
+<li>
+<p><strong>变量替换串行处理</strong><br />
+<code>chatCompletionHandler.js:565</code> 与 <code>576</code> 附近逐条调用 <code>messageProcessor.replaceAgentVariables()</code>，文档关于串行处理的描述成立。</p>
+</li>
+<li>
+<p><strong>hybridservice 可进入预处理器集合</strong><br />
+<code>Plugin.js:494-497</code> 支持该判断，这解释了 <code>VCPTavern</code> 的特殊行为。</p>
+</li>
+<li>
+<p><strong><code>TagMemo+</code> 启用测地线重排</strong><br />
+<code>RAGDiaryPlugin.js:2371-2384</code> 明确支持 <code>::TagMemo+</code> 和 <code>useGeodesicRerank</code>。</p>
+</li>
+<li>
+<p><strong>动态 TagMemo 默认权重范围</strong><br />
+<code>RAGDiaryPlugin.js:610-612</code> 默认 <code>tagWeightRange</code> 是 <code>[0.05, 0.45]</code>，文档中关于 <code>TagMemo0.65</code> 超出默认动态上限的判断成立。</p>
+</li>
+<li>
+<p><strong>AIMemo 全局许可证</strong><br />
+<code>RAGDiaryPlugin.js:1121-1124</code> 检测 <code>[[AIMemo=True]]</code>，文档说明成立。</p>
+</li>
+<li>
+<p><strong>聚合日记本 <code>|</code> 语法</strong><br />
+<code>RAGDiaryPlugin.js:2012-2024</code> 支持按 <code>|</code> 拆分多个日记本名。</p>
+</li>
+</ol>
+<hr />
+<h2 id="_5">五、建议修订顺序<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>建议按以下顺序修文档：</p>
+<ol>
+<li>
+<p><code>05-工具调用协议.md</code><br />
+   修正 <code>&lt;thinking&gt;</code> / <code>&lt;think&gt;</code> 工具隔离说明。</p>
+</li>
+<li>
+<p><code>08-消息处理管线.md</code><br />
+   同步修正“先移除 <code>&lt;thinking&gt;</code> 块”的说法。</p>
+</li>
+<li>
+<p><code>10-分布式与安全.md</code><br />
+   拆清 distributed、ChromeControl、hybridservice direct 三条路径。</p>
+</li>
+<li>
+<p><code>06-插件生态.md</code><br />
+   更新插件数量、类型统计，并修正 <code>VCPTavern</code> 类型。</p>
+</li>
+<li>
+<p><code>09-多Agent协同体系.md</code><br />
+   修正 <code>VCPTavern</code> 类型为 <code>hybridservice</code>，说明其作为预处理器的来源是加载器规则。</p>
+</li>
+<li>
+<p><code>11-Agent配置建议.md</code><br />
+   改为历史快照或升级成“旧版问题 / 当前样本状态 / 待处理”表。</p>
+</li>
+<li>
+<p><code>12-提示词架构优化方案.md</code><br />
+   调整 <code>AIMemo:0.6</code> 与 <code>Rerank</code> 的表述，避免维护者误会。</p>
+</li>
+<li>
+<p><code>00-总索引.md</code> / <code>01-系统全景.md</code> / <code>99-系统联动全景与盲区分析.md</code><br />
+   同步修正数量口径与目录状态。</p>
+</li>
+</ol>
+<hr />
+<h2 id="_6">六、后续可执行项<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<p>如果要进入下一阶段，建议拆成两类任务：</p>
+<h3 id="a">A. 纯文档修订<a class="headerlink" href="#a" title="Permanent link">&para;</a></h3>
+<p>只改 <code>更新日志/vcp功能及源码解读/*.md</code>，不碰源码。目标是让文档准确描述当前源码。</p>
+<h3 id="b">B. 源码安全修正<a class="headerlink" href="#b" title="Permanent link">&para;</a></h3>
+<p>修 <code>modules/vcpLoop/toolCallParser.js</code>，让工具解析器同时移除 <code>&lt;think&gt;</code> 和 <code>&lt;thinking&gt;</code>。随后再回头统一文档和 Agent 提示词规范。</p>
+<p>当前最推荐先做 B，因为它影响工具调用边界；修完后文档就可以稳定采用 <code>&lt;thinking&gt;</code> 规范。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+  
+    
+    <section class="vcp-comments" aria-label="留言区">
+      <h2 id="comments">留言区</h2>
+      
+        <div class="vcp-comments-placeholder">
+          <p>留言区已预留。部署到 GitHub 后，启用 Discussions，安装 Giscus，并在 <code>mkdocs.yml</code> 的 <code>extra.giscus</code> 中填写 <code>repo</code>、<code>repo_id</code> 和 <code>category_id</code> 即可开启。</p>
+        </div>
+      
+    </section>
+  
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "navigation.tracking", "toc.follow", "search.highlight", "search.share", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

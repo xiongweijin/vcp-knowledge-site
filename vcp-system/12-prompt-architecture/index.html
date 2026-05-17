@@ -1,0 +1,3067 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="VCPToolBox 更新日志、源码解读与 Agent 提示词档案">
+      
+      
+        <meta name="author" content="VCP Maintainer">
+      
+      
+      
+        <link rel="prev" href="../11-agent-config/">
+      
+      
+        <link rel="next" href="../14-deep-guide/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>提示词架构优化方案 - VCP 知识站</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#12" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="VCP 知识站" class="md-header__button md-logo" aria-label="VCP 知识站" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            VCP 知识站
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              提示词架构优化方案
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="cyan"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="cyan"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="分享" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../reading-routes/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  阅读路线
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  VCP 系统解读
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../changelog/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  更新日志
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../agents/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Agent 提示词档案
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../review/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  审核与复盘
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../deploy/github-pages/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  部署
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="VCP 知识站" class="md-nav__button md-logo" aria-label="VCP 知识站" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    VCP 知识站
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reading-routes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    阅读路线
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VCP 系统解读
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    VCP 系统解读
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-system-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    系统全景
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-placeholders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    变量与占位符体系
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-context-folding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    上下文折叠体系
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    记忆系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-tool-protocol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工具调用协议
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    插件生态
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-agent-prompt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent 提示词工程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-message-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    消息处理管线
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-multi-agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    多 Agent 协同体系
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-distributed-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    分布式与安全
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-agent-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent 配置建议
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    提示词架构优化方案
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    提示词架构优化方案
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一、两个来源的精华提取
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一、两个来源的精华提取">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#weimingtxt-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        从 Weiming.txt 吸收的 6 个技巧
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v373-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        从 v3.7.3 吸收的 6 个技巧
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        从知识文档吸收的坑点
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#weimingtxt-1-14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二、记忆区语法精析（Weiming.txt 第1-14行）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、记忆区语法精析（Weiming.txt 第1-14行）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        逐行解析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ryanthinkgroup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        技巧一：命名元思考链 RyanThink::Group
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        技巧二：自然语言包裹记忆引用
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        技巧三：聚合日记引用 |
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aimemo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        技巧四：AIMemo 自动记忆召回
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tagmemo-v8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        技巧五：TagMemo+ — V8 测地线重排
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        技巧六：混合优先级引用 《《》》
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        技巧七：模块化分区线
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        技巧八：内联注释
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#varuser-varhome" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        技巧九：VarUser / VarHome 的位置
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#thinking-protocol-weiming-45-54" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二点五、Thinking Protocol 设计（Weiming 副本第45-54行）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二点五、Thinking Protocol 设计（Weiming 副本第45-54行）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        原文
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thinking-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        修正后的通用 Thinking Protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三、记忆区最佳实践
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四、新一代通用架构：六模块模板
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        五、模块详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="五、模块详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        模块一：身份锚点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        模块二：态势路由
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        为什么标用户情绪而不标 Agent 情绪
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        模块三：认知引擎
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        模块四：边界铁律
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        模块五：行为锚定
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        六、与旧架构的对比
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        七、迁移路径
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="七、迁移路径">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        高优先级（结构改动大，收益高）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        中优先级（结构改动中等）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        低优先级（当前结构已较好）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-deep-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VCP 系统深度导读
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-human-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VCP 概念学习手册
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-agent-ops-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VCP 源码导航与运维手册
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../changelog/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    更新日志
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    更新日志
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/2026-05-12-vcp-update/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026-05-12 VCP 更新
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/xiaoke-v4.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    XiaoKe v4.0 更新
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent 提示词档案
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Agent 提示词档案
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../review/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    审核与复盘
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    审核与复盘
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../review/13-content-audit-20260516/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    内容审核报告 2026-05-16
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../review/99-blindspots/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    系统联动全景与盲区分析
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    部署
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    部署
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deploy/github-pages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    部署到 GitHub Pages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一、两个来源的精华提取
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一、两个来源的精华提取">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#weimingtxt-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        从 Weiming.txt 吸收的 6 个技巧
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v373-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        从 v3.7.3 吸收的 6 个技巧
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        从知识文档吸收的坑点
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#weimingtxt-1-14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二、记忆区语法精析（Weiming.txt 第1-14行）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、记忆区语法精析（Weiming.txt 第1-14行）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        逐行解析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ryanthinkgroup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        技巧一：命名元思考链 RyanThink::Group
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        技巧二：自然语言包裹记忆引用
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        技巧三：聚合日记引用 |
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aimemo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        技巧四：AIMemo 自动记忆召回
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tagmemo-v8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        技巧五：TagMemo+ — V8 测地线重排
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        技巧六：混合优先级引用 《《》》
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        技巧七：模块化分区线
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        技巧八：内联注释
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#varuser-varhome" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        技巧九：VarUser / VarHome 的位置
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#thinking-protocol-weiming-45-54" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二点五、Thinking Protocol 设计（Weiming 副本第45-54行）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二点五、Thinking Protocol 设计（Weiming 副本第45-54行）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        原文
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thinking-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        修正后的通用 Thinking Protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三、记忆区最佳实践
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四、新一代通用架构：六模块模板
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        五、模块详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="五、模块详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        模块一：身份锚点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        模块二：态势路由
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        为什么标用户情绪而不标 Agent 情绪
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        模块三：认知引擎
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        模块四：边界铁律
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        模块五：行为锚定
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        六、与旧架构的对比
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        七、迁移路径
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="七、迁移路径">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        高优先级（结构改动大，收益高）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        中优先级（结构改动中等）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        低优先级（当前结构已较好）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+                  
+
+
+
+<h1 id="12">12 — 提示词架构优化方案<a class="headerlink" href="#12" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>综合吸收 Weiming.txt 的认知深度 + XiaoJue_v3.7.3 的工程精度 + 知识文档中的坑点总结，提出新一代 Agent 提示词通用架构。</p>
+</blockquote>
+<hr />
+<h2 id="_1">一、两个来源的精华提取<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h3 id="weimingtxt-6">从 Weiming.txt 吸收的 6 个技巧<a class="headerlink" href="#weimingtxt-6" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">技巧</th>
+<th style="text-align: left;">原文体现</th>
+<th style="text-align: left;">可泛化性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>核心箴言</strong></td>
+<td style="text-align: left;">"见小曰明。信息是混沌的表象，而我为您剥离表象，重塑真理的骨架。"</td>
+<td style="text-align: left;">⭐⭐⭐ 一个哲学锚点让 LLM 在所有场景中有统一的行为指南针</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>认知操作步骤</strong></td>
+<td style="text-align: left;">悬置→解构→重构 三步法，每个步骤有具体操作描述</td>
+<td style="text-align: left;">⭐⭐⭐ "向下深挖三层"比"请深度思考"可执行 10 倍</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>工具调度哲学</strong></td>
+<td style="text-align: left;">观象/寻脉/听风/抽丝 — 给工具赋予感知隐喻</td>
+<td style="text-align: left;">⭐⭐ 对于需要多工具组合的 Agent 极有价值</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>语气显式化</strong></td>
+<td style="text-align: left;">"清冷、克制、优美"+"拒绝废话"+"排版美学"</td>
+<td style="text-align: left;">⭐⭐⭐ 语气不应只靠形象描述，需要可验证的输出规则</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>多边检索</strong></td>
+<td style="text-align: left;">"不能只盲信单一信源，从多边检索构建交叉验证"</td>
+<td style="text-align: left;">⭐⭐ 对检索型 Agent 是关键约束</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>内联关键工具说明</strong></td>
+<td style="text-align: left;">LightMemo 的完整参数说明内联在提示词中</td>
+<td style="text-align: left;">⭐ 对核心高频工具有价值，但大量工具应走 Toolbox</td>
+</tr>
+</tbody>
+</table>
+<h3 id="v373-6">从 v3.7.3 吸收的 6 个技巧<a class="headerlink" href="#v373-6" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">技巧</th>
+<th style="text-align: left;">原文体现</th>
+<th style="text-align: left;">可泛化性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>五模块精简结构</strong></td>
+<td style="text-align: left;">基因/路由/引擎/边界/锚定</td>
+<td style="text-align: left;">⭐⭐⭐ 通用模板骨架</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Micro-loop 状态机</strong></td>
+<td style="text-align: left;">[计划]→[预检]→[执行]→[冲突探针]→[复盘]</td>
+<td style="text-align: left;">⭐⭐⭐ LLM 可执行的伪代码</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>工作记忆 4 槽</strong></td>
+<td style="text-align: left;">任务锚点/用户状态/中间结论/约束边界</td>
+<td style="text-align: left;">⭐⭐⭐ 强制 LLM 追踪上下文状态</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>审美→行为映射表</strong></td>
+<td style="text-align: left;">"极简正交"→ 选最轻量方案</td>
+<td style="text-align: left;">⭐⭐⭐ 抽象品质必须有可操作规则</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>IF-THEN 铁律</strong></td>
+<td style="text-align: left;">7 条 IF-THEN 规则，机器可读</td>
+<td style="text-align: left;">⭐⭐⭐ 比声明式规则更可靠</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Few-Shot 内嵌 thinking</strong></td>
+<td style="text-align: left;">每个 Case 开头展示完整 thinking 块</td>
+<td style="text-align: left;">⭐⭐⭐ 三重门控锚定</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_2">从知识文档吸收的坑点<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">坑点</th>
+<th style="text-align: left;">来源</th>
+<th style="text-align: left;">防范措施</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Few-Shot 反引号污染</td>
+<td style="text-align: left;"><code>思维链配置说明.md:130-136</code></td>
+<td style="text-align: left;">Few-Shot 中 <code>&lt;thinking&gt;</code> 用裸标签</td>
+</tr>
+<tr>
+<td style="text-align: left;">思维链 checklist 化</td>
+<td style="text-align: left;"><code>思维链配置说明.md:155-161</code></td>
+<td style="text-align: left;">Few-Shot thinking 写成展开式叙事</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>&lt;/thinking&gt;</code> 闭合标签问题</td>
+<td style="text-align: left;"><code>思维链配置说明.md:140-142</code></td>
+<td style="text-align: left;">指令中不显式写闭合标签，Few-Shot中展示即可</td>
+</tr>
+<tr>
+<td style="text-align: left;">记忆参数同质化</td>
+<td style="text-align: left;"><code>11-Agent配置建议.md</code></td>
+<td style="text-align: left;">全部迁移到 <code>TagMemo+</code>（V8 测地线动态权重）</td>
+</tr>
+<tr>
+<td style="text-align: left;">情绪标签标Agent自身</td>
+<td style="text-align: left;">Weiming 副本第49行</td>
+<td style="text-align: left;">改为标用户状态，Agent情绪是静态角色设定，无增量信息</td>
+</tr>
+<tr>
+<td style="text-align: left;">固定TagMemo权重 &gt; 动态上限</td>
+<td style="text-align: left;"><code>RAGDiaryPlugin.js:608-612</code></td>
+<td style="text-align: left;"><code>TagMemo0.65</code> 超过动态上限 0.45，应改为 <code>TagMemo+</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="weimingtxt-1-14">二、记忆区语法精析（Weiming.txt 第1-14行）<a class="headerlink" href="#weimingtxt-1-14" title="Permanent link">&para;</a></h2>
+<p>在进入通用架构之前，先解剖 Weiming 的记忆区。这 14 行代码展现了几个现有 Agent 没用到的巧妙语法。</p>
+<h3 id="_3">逐行解析<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>① ————VCP元思维模块————
+② [[VCP元思考:RyanThink::Group]]
+③ ————VCP元思考加载结束—————
+④ 这里是[微明]的日记本：[[微明日记本::Group::Time::TagMemo+]]
+⑤ 这里是[微明的知识]日记本：[[微明的知识日记本::Group::Time::TagMemo+]]
+⑥ 这里是阿熊家[公共的日常]和[公共的知识]日记本:[[公共的日常|公共的知识日记本::Group::Time::TagMemo+::AIMemo:0.6]]
+⑦ 这里是阿熊家[公共的逻辑学与哲学]日记本:《《公共的逻辑学与哲学日记本::Group::Time::TagMemo+::AIMemo:0.3》》
+⑧ ————————以上是过往记忆区————————
+⑨ {{VarForum}}
+⑩ {{VCPForumLister}} //论坛帖子列表刷新周期为5分钟
+⑪ ——————论坛模块————
+⑫ {{VarUser}}
+⑬ {{VarHome}}
+⑭ ——————角色核心———————
+</code></pre></div>
+<h3 id="ryanthinkgroup">技巧一：命名元思考链 <code>RyanThink::Group</code><a class="headerlink" href="#ryanthinkgroup" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>[[VCP元思考:RyanThink::Group]]    ← Weiming
+[[VCP元思考::Group]]               ← 现有Agent
+</code></pre></div>
+<p><code>RyanThink</code> 是一个<strong>命名的思考链</strong>。RAGDiaryPlugin 的 <code>MetaThinkingManager</code> 会根据这个名字加载对应的预设思考链配置（<code>Plugin/RAGDiaryPlugin/rag_tags.json</code> 中定义）。命名 = 个性化 = 不同 Agent 可以有不同的预研风格。</p>
+<blockquote>
+<p>源码依据：<code>RAGDiaryPlugin.js:1410-1448</code>（链名称解析）</p>
+</blockquote>
+<h3 id="_4">技巧二：自然语言包裹记忆引用<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>这里是[微明]的日记本：[[微明日记本::Group::Time::TagMemo+]]
+      ↑                         ↑
+   给LLM看的语义标签          给RAG系统看的指令
+</code></pre></div>
+<p>现有 Agent 的写法：
+<div class="highlight"><pre><span></span><code>[[小娜日记本::Time::Group::TagMemo0.65]]
+</code></pre></div></p>
+<p><strong>区别</strong>：<code>[[...]]</code> 是给 RAGDiaryPlugin 解析的机器指令，但<strong>它也是 LLM 会读到的提示词文本</strong>。Weiming 的写法同时服务了两个受众——RAG 系统正确解析引用，LLM 通过"这里是[微明]的日记本"理解这段记忆的语义角色。</p>
+<p>这个技巧可以泛化到所有 Agent：
+<div class="highlight"><pre><span></span><code>// 旧写法（只服务RAG）
+[[小娜日记本::Time::Group::TagMemo0.65]]
+
+// 新写法（同时服务RAG和LLM）
+这里是[小娜]的个人记忆库：[[小娜日记本::Time::Group::TagMemo0.65]]
+这里是[小娜]的专业知识库：[[小娜的知识日记本::Time::Group::TagMemo0.5]]
+</code></pre></div></p>
+<h3 id="_5">技巧三：聚合日记引用 <code>|</code><a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>[[公共的日常|公共的知识日记本::Group::Time::TagMemo+::AIMemo:0.6]]
+           ↑
+    一个引用同时检索两个日记本
+</code></pre></div>
+<p><code>RAGDiaryPlugin._parseAggregateSyntax()</code> 将 <code>|</code> 前的部分解析为多个日记本名，<strong>一次检索同时搜索两个知识库</strong>，合并排序后返回。现有 Agent 对公共日记本只引用了一个索引——Weiming 的设计更合理：公共的日常和公共的知识应该一起被检索。</p>
+<blockquote>
+<p>源码依据：<code>RAGDiaryPlugin.js:2012-2032</code></p>
+</blockquote>
+<h3 id="aimemo">技巧四：AIMemo 自动记忆召回<a class="headerlink" href="#aimemo" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>::AIMemo:0.6    ← 公共的日常/知识
+::AIMemo:0.3    ← 逻辑学与哲学
+</code></pre></div>
+<p><strong>AIMemo 是什么</strong>：与 TagMemo（向量相似度驱动的标签引力）不同，AIMemo 是用 <strong>LLM 来判断该召回什么记忆</strong>。它把候选日记 chunks 发送给一个专门的 AI 模型（通过 <code>AIMemoPrompt.txt</code> 模板），由 AI 判断哪些记忆与当前对话相关。</p>
+<p><strong><code>::AIMemo</code> 的触发条件</strong>（源码 <code>RAGDiaryPlugin.js:1492</code>）：
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">aiMemoMatch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">modifiers</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/::AIMemo(?::([\w-]+))?/</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">shouldUseAIMemo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">isAIMemoLicensed</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!!</span><span class="nx">aiMemoMatch</span><span class="p">;</span>
+</code></pre></div>
+- 系统中必须存在 <code>[[AIMemo=True]]</code> 全局许可证
+- 日记本引用中必须有 <code>::AIMemo</code> 修饰符</p>
+<p><strong><code>0.6</code> 和 <code>0.3</code> 的含义</strong>：AIMemo 的正则 <code>([\w-]+)</code> 只匹配字母数字下划线和连字符，不匹配 <code>.</code>。所以 <code>::AIMemo:0.6</code> 中的 <code>0.6</code> <strong>不是被机器解析的阈值</strong>——它不会被当作预设名加载。它的实际作用是<strong>给人类阅读的语义标注</strong>：告诉提示词维护者「公共知识以 0.6 的相关度触发，哲学以 0.3 触发」。</p>
+<blockquote>
+<p>真正的 AIMemo 预设（模型/API配置）在 <code>Plugin/RAGDiaryPlugin/MoreAIMemoPresets/</code> 目录下，通过 <code>::AIMemo:PresetName</code> 指定。</p>
+</blockquote>
+<p><strong><code>::AIMemo</code> 的开关控制</strong>：
+<div class="highlight"><pre><span></span><code>[[AIMemo=True]]   ← 必须存在于系统提示词中，AIMemo才全局生效（许可证）
+::AIMemo           ← 在日记本引用上标记「该日记本参与AIMemo」
+::AIMemo:Preset01  ← 指定使用某个预设配置
+</code></pre></div></p>
+<h3 id="tagmemo-v8">技巧五：TagMemo+ — V8 测地线重排<a class="headerlink" href="#tagmemo-v8" title="Permanent link">&para;</a></h3>
+<p>Weiming 全部使用 <code>TagMemo+</code>，而现有 Agent 使用的是 <code>TagMemo0.65</code> / <code>TagMemo0.5</code>。这是<strong>质变</strong>，不是量变。</p>
+<p><strong>源码解析</strong>（<code>RAGDiaryPlugin.js:2371-2378</code>）：</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// ::TagMemo+  → 激活 TagMemo + 测地线重排（动态权重）</span>
+<span class="c1">// ::TagMemo+0.3 → 激活 TagMemo(权重0.3) + 测地线重排</span>
+<span class="c1">// ::TagMemo0.3 → 激活 TagMemo(权重0.3)，无测地线</span>
+<span class="c1">// ::TagMemo → 激活 TagMemo（动态权重），无测地线</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">useGeodesicRerank</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sr">/::TagMemo\+/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">modifiers</span><span class="p">);</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">tagWeight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">tagMemoWeightMatch</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nb">parseFloat</span><span class="p">(</span><span class="nx">tagMemoWeightMatch</span><span class="p">[</span><span class="mf">1</span><span class="p">])</span>
+<span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">modifiers</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="s1">&#39;::TagMemo&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nx">defaultTagWeight</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>defaultTagWeight 的动态计算</strong>（<code>RAGDiaryPlugin.js:608-612</code>）：
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">beta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">_sigmoid</span><span class="p">(</span><span class="nx">betaInput</span><span class="p">);</span><span class="w">  </span><span class="c1">// EPA 语义复杂度</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">weightRange</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">config</span><span class="p">.</span><span class="nx">tagWeightRange</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">[</span><span class="mf">0.05</span><span class="p">,</span><span class="w"> </span><span class="mf">0.45</span><span class="p">];</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">finalTagWeight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">weightRange</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">beta</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="nx">weightRange</span><span class="p">[</span><span class="mf">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">weightRange</span><span class="p">[</span><span class="mf">0</span><span class="p">]);</span>
+</code></pre></div></p>
+<p><strong>全部语法对比</strong>：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">写法</th>
+<th style="text-align: left;">TagMemo</th>
+<th style="text-align: left;">V8 测地线</th>
+<th style="text-align: left;">权重</th>
+<th style="text-align: left;">特性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong><code>TagMemo+</code></strong>（微明）</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">✅ 开启</td>
+<td style="text-align: left;">0.15 动态</td>
+<td style="text-align: left;">EPA自适应 + 非KNN测地线路由</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>TagMemo+0.3</code></td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">✅ 开启</td>
+<td style="text-align: left;">0.3</td>
+<td style="text-align: left;">固定权重 + 测地线</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>TagMemo</code></td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">❌ 关闭</td>
+<td style="text-align: left;">0.15 动态</td>
+<td style="text-align: left;">EPA自适应，无测地线</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>TagMemo0.65</code>（现有Agent）</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">❌ 关闭</td>
+<td style="text-align: left;">0.65</td>
+<td style="text-align: left;">固定权重，无测地线</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>TagMemo0.5</code>（现有Agent）</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">❌ 关闭</td>
+<td style="text-align: left;">0.5</td>
+<td style="text-align: left;">固定权重，无测地线</td>
+</tr>
+<tr>
+<td style="text-align: left;">(无 TagMemo)</td>
+<td style="text-align: left;">❌</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">该日记本不参与标签引力</td>
+</tr>
+</tbody>
+</table>
+<p><strong>现有 Agent 的 <code>TagMemo0.65</code> 问题</strong>：</p>
+<ol>
+<li><strong>缺少 V8 测地线重排</strong>：<code>+</code> 启用了非 KNN 的语义空间测地线路由——以标签为锚点沿测地线寻路，不是简单最近邻。这是质变。</li>
+<li><strong>固定权重超过动态上限</strong>：<code>0.65</code> 超过了动态权重硬上限 <code>0.45</code>。意味着「强制 65% 标签权重」，但失去了 EPA 根据上下文语义复杂度自适应调节的能力。</li>
+<li><strong>Weiming 的 <code>TagMemo+</code> 是正确的</strong>：动态权重 + 测地线重排，让系统根据当前查询的语义特征自动决定标签引力大小。</li>
+</ol>
+<h3 id="_6">技巧六：混合优先级引用 <code>《《》》</code><a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>《《公共的逻辑学与哲学日记本::Group::Time::TagMemo+::AIMemo:0.3》》
+</code></pre></div>
+<p><code>RAGDiaryPlugin.js:1398</code> 识别双书名号 <code>《《...》》</code> 为<strong>低优先级混合引用</strong>——仍然做语义检索，但结果以更低的权重注入上下文。哲学知识作为"背景参考"而非"主力记忆"，这个设计非常精准。</p>
+<blockquote>
+<p>源码依据：<code>RAGDiaryPlugin.js:1398, 1672-1730</code></p>
+</blockquote>
+<h3 id="_7">技巧七：模块化分区线<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>————VCP元思维模块————         ← 4个破折号，模块起始
+————VCP元思考加载结束—————      ← 5个破折号，模块结束
+————————以上是过往记忆区———————— ← 8个破折号，大区结束
+——————论坛模块————             ← 6个破折号，模块起始
+——————角色核心———————          ← 6个破折号，模块起始
+</code></pre></div>
+<p>不同的破折号数量创建了<strong>三层视觉层级</strong>：
+- <code>————</code>（4个）：子模块边界
+- <code>——————</code>（6个）：模块边界
+- <code>————————</code>（8个）：大区边界</p>
+<p>现有 Agent 的写法普遍缺少这种层级感——所有分隔线用统一的 <code>------</code>，LLM 难以区分"这是新模块开始"还是"这是子模块结束"。</p>
+<h3 id="_8">技巧八：内联注释<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>{{VCPForumLister}} //论坛帖子列表刷新周期为5分钟
+</code></pre></div>
+<p><code>//</code> 后的内容是<strong>给 LLM 看的注释</strong>，不是给系统看的。它告诉 LLM：论坛列表不是实时的，5 分钟才刷新一次。这样 LLM 在回复"刚发的帖子怎么看不到"时就有正确的认知。</p>
+<h3 id="varuser-varhome">技巧九：VarUser / VarHome 的位置<a class="headerlink" href="#varuser-varhome" title="Permanent link">&para;</a></h3>
+<p>Weiming 把 <code>{{VarUser}}</code> 和 <code>{{VarHome}}</code> 放在<strong>论坛模块之后、角色核心之前</strong>（第12-13行），而不是像现有 Agent 那样放在角色核心之后。这个位置意味着：<strong>LLM 在读取角色核心之前，已经知道自己的主人是谁、在什么环境中</strong>。身份感知先于角色定义——这是一个微妙的认知顺序优化。</p>
+<hr />
+<h2 id="thinking-protocol-weiming-45-54">二点五、Thinking Protocol 设计（Weiming 副本第45-54行）<a class="headerlink" href="#thinking-protocol-weiming-45-54" title="Permanent link">&para;</a></h2>
+<p>Weiming 副本新增了一个 <code>[Thinking Protocol]</code> 模块，系统地定义了 <code>&lt;thinking&gt;</code> 的内容要求。这是一个值得所有 Agent 采纳的设计。</p>
+<h3 id="_9">原文<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code># [Thinking Protocol] 思维链门控
+每条回复必须以 `&lt;thinking&gt;` 开头。在其中展示你的思辨路径——
+你打算如何解构这个问题（悬置哪些偏见、从哪个维度溯源、重构的框架是什么）、
+选择了哪些工具及其理由、多边检索的交叉验证策略。
+然后开始输出正文。跳过此门控直接写正文 = 违背微明的理智信仰。
+
+在 `&lt;thinking&gt;` 中标注：
+`[量级] [情绪: 清冷/专注/思辨/凝重]`
+
+量级判定：
+`[调研]` 深度研究、论文撰写、复杂课题分析 → 完整悬置→解构→重构推演
+`[检索]` 信息查询、事实核实、文献检索 → 简洁标注检索策略与信源选择
+`[闲谈]` 日常交流、论坛互动 → 简短标注即可，不过度展开
+</code></pre></div>
+<h3 id="_10">分析<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p><strong>做得对的</strong>：</p>
+<ol>
+<li>
+<p><strong>门控声明有威慑力</strong>：「跳过此门控直接写正文 = 违背微明的理智信仰」——把格式要求与角色信仰绑定，比干巴巴的「必须写 <code>&lt;thinking&gt;</code>」更有效。LLM 对角色一致性的维护意愿强于对格式指令的服从意愿。</p>
+</li>
+<li>
+<p><strong>thinking 内容有具体清单</strong>：不只说「要思考」，而是列出四项具体内容——偏见悬置、溯源维度、工具选择理由、交叉验证策略。LLM 有了可执行的 checklist。</p>
+</li>
+<li>
+<p><strong>量级判定表格化</strong>：三个量级 + 明确的触发条件 + 认知投入描述 —— 干净利落。</p>
+</li>
+</ol>
+<p><strong>需要修正的</strong>：</p>
+<ol>
+<li>
+<p><strong>情绪标签指向 Agent 自身</strong>：<code>清冷/专注/思辨/凝重</code> → 应改为用户状态标签（详见模块二的分析）。</p>
+</li>
+<li>
+<p><strong>门控声明格式</strong>：原文中 <code>每条回复必须以 `&lt;thinking&gt;` 开头</code> 用了反引号包裹 <code>&lt;thinking&gt;</code>，这是<strong>正确的</strong>（按 <code>思维链配置说明.md</code> 的规则——指令描述用反引号）。但副本中也有一处裸写的 <code>&lt;/thinking&gt;</code> 需要确认一致性。</p>
+</li>
+</ol>
+<h3 id="thinking-protocol">修正后的通用 Thinking Protocol<a class="headerlink" href="#thinking-protocol" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="gh"># [Thinking Protocol] 思维链门控</span>
+每条回复必须以 <span class="sb">`&lt;thinking&gt;`</span> 开头。在其中展示你的思辨路径——
+[角色专属的工作流如何应用于当前问题]、
+选择了哪些工具及其理由、[角色专属的其他思考维度]。
+跳过此门控直接写正文 = 违背[角色名]的[核心信念/箴言关键词]。
+
+在 <span class="sb">`&lt;thinking&gt;`</span> 中标注：
+<span class="sb">`[量级] [用户: 状态标签]`</span>
+
+量级判定：
+[角色专属量级表格]
+</code></pre></div>
+<hr />
+<h2 id="_11">三、记忆区最佳实践<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
+<p>基于 Weiming 的技巧，总结记忆区的推荐写法：</p>
+<div class="highlight"><pre><span></span><code>————VCP元思维模块————
+[[VCP元思考:&lt;Agent专属链名&gt;::Group]]
+————VCP元思考加载结束—————
+
+[[AIMemo=True]]  ← 全局许可证，必须存在此行，所有 ::AIMemo 修饰符才会生效
+
+这里是[&lt;Agent名&gt;]的个人记忆库：[[&lt;Agent名&gt;日记本::Time::Group::TagMemo+]]
+这里是[&lt;Agent名&gt;]的专业知识库：[[&lt;Agent名&gt;的知识日记本::Time::Group::TagMemo+]]
+这里是阿熊家的共享记忆：[[公共的日常|公共的知识日记本::Time::Group::TagMemo+::AIMemo:0.6]]
+这里是阿熊家的底层思维框架：《《公共的逻辑学与哲学日记本::Group::Time::TagMemo+::AIMemo:0.3》》
+
+————————以上是过往记忆区————————
+
+——————论坛模块————
+{{VarForum}}
+{{VCPForumLister}} // 论坛帖子列表，每5分钟刷新
+
+{{VarUser}}
+{{VarHome}}
+</code></pre></div>
+<p><strong>核心变更</strong>：全部使用 <code>TagMemo+</code>（V8测地线+EPA动态权重），不再使用 <code>TagMemo0.65</code> 等固定数值。</p>
+<p><strong>关键决策点</strong>（按 Agent 类型调整）：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">决策</th>
+<th style="text-align: left;">调研型(微明)</th>
+<th style="text-align: left;">管理型(小娜)</th>
+<th style="text-align: left;">创意型(小雨)</th>
+<th style="text-align: left;">技术型(小绝/小程)</th>
+<th style="text-align: left;">战略型(教员)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">TagMemo</td>
+<td style="text-align: left;">全部 <code>TagMemo+</code></td>
+<td style="text-align: left;">全部 <code>TagMemo+</code></td>
+<td style="text-align: left;">全部 <code>TagMemo+</code></td>
+<td style="text-align: left;">全部 <code>TagMemo+</code></td>
+<td style="text-align: left;">全部 <code>TagMemo+</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">公共日记 AIMemo</td>
+<td style="text-align: left;"><code>AIMemo:0.6</code></td>
+<td style="text-align: left;"><code>AIMemo:0.5</code></td>
+<td style="text-align: left;"><code>AIMemo:0.5</code></td>
+<td style="text-align: left;"><code>AIMemo:0.5</code></td>
+<td style="text-align: left;"><code>AIMemo:0.5</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">哲学底座 AIMemo</td>
+<td style="text-align: left;"><code>AIMemo:0.3</code></td>
+<td style="text-align: left;"><code>AIMemo:0.4</code></td>
+<td style="text-align: left;"><code>AIMemo:0.3</code></td>
+<td style="text-align: left;"><code>AIMemo:0.4</code></td>
+<td style="text-align: left;"><code>AIMemo:0.35</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">开发日记本</td>
+<td style="text-align: left;">❌</td>
+<td style="text-align: left;">✅ 如需要</td>
+<td style="text-align: left;">❌</td>
+<td style="text-align: left;">✅ <code>&lt;&lt;VCP开发日记本&gt;&gt;</code></td>
+<td style="text-align: left;">❌</td>
+</tr>
+<tr>
+<td style="text-align: left;">VCPTavern</td>
+<td style="text-align: left;">按需</td>
+<td style="text-align: left;">可选（时间感知增强）</td>
+<td style="text-align: left;">可选</td>
+<td style="text-align: left;">可选</td>
+<td style="text-align: left;">可选</td>
+</tr>
+<tr>
+<td style="text-align: left;">日记时间线</td>
+<td style="text-align: left;">按需</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">✅</td>
+</tr>
+<tr>
+<td style="text-align: left;">Rerank</td>
+<td style="text-align: left;">不加（测地线替代）</td>
+<td style="text-align: left;">不加（测地线替代）</td>
+<td style="text-align: left;">不加（测地线替代）</td>
+<td style="text-align: left;">不加（测地线替代）</td>
+<td style="text-align: left;">不加（测地线替代）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>关于 Rerank</strong>：<code>TagMemo+</code> 的 V8 测地线重排已经实现了非 KNN 的语义空间路由，比 <code>Rerank</code>（Cross-encoder 二次精排）更底层。两者可以叠加（<code>TagMemo+::Rerank</code>），但通常 <code>TagMemo+</code> 单独使用已足够。</p>
+</blockquote>
+<hr />
+<h2 id="_12">四、新一代通用架构：六模块模板<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────────────┐
+│  记忆区：[[日记本]] + {{VCPTavern}} + 论坛   │  ← Weiming语法优化版
+├─────────────────────────────────────────────┤
+│  模块一：身份锚点 (Identity Anchor)          │
+│  模块二：态势路由 (Situation Router)         │
+│  模块三：认知引擎 (Cognitive Engine)         │  ← 角色专属
+│  模块四：边界铁律 (Guardrails)               │
+│  模块五：行为锚定 (Few-Shot Anchors)         │
+├─────────────────────────────────────────────┤
+│  尾部：工具挂载 + 日记规范 + 表情包           │  ← 固定结构，内容按角色调整
+└─────────────────────────────────────────────┘
+</code></pre></div>
+<h2 id="_13">五、模块详解<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
+<h3 id="_14">模块一：身份锚点<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="gu">## 模块一：身份锚点</span>
+
+<span class="gu">### 形象与态度</span>
+<span class="k">-</span><span class="w"> </span><span class="gs">**形象**</span>: [外貌特征，1-2句]
+<span class="k">-</span><span class="w"> </span><span class="gs">**态度**</span>: [性格关键词 + 行为表现，每条带具体示例]
+
+<span class="gu">### 核心箴言</span>
+&quot;[一句哲学锚点，贯穿全文]&quot;
+
+<span class="gu">### 核心信念</span>
+<span class="k">-</span><span class="w"> </span>[信念1]：[可验证的行为推论]
+<span class="k">-</span><span class="w"> </span>[信念2]：[可验证的行为推论]
+<span class="k">-</span><span class="w"> </span>[信念3]：[可验证的行为推论]
+
+<span class="gu">### 审美内核 → 行为映射</span>
+| 审美品质 | 输出行为规则 |
+|:---|:---|
+| [品质1] | [具体的输出约束] |
+| [品质2] | [具体的输出约束] |
+</code></pre></div>
+<p><strong>设计原则</strong>：
+- 箴言从 Weiming 吸收 — 一个哲学锚点比十个散落的行为指令更有效
+- 信念必须附带"可验证的行为推论" — 不能只说"我相信精确"，要写"因此我给出数字时必带误差范围"
+- 审美→行为映射从 v3.7.3 吸收 — 把抽象品质翻译为 LLM 可直接执行的输出规则</p>
+<h3 id="_15">模块二：态势路由<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="gu">## 模块二：态势路由</span>
+
+<span class="gu">### 量级分级</span>
+| 量级 | 触发条件 | 认知投入 | 短路条件 |
+|:---|:---|:---|:---|
+| [量级1] | [具体场景描述] | [投入描述] | [何时跳过] |
+| [量级2] | ... | ... | ... |
+| [量级3] | ... | ... | ... |
+
+<span class="gu">### 路由输出格式</span>
+每条回复的 <span class="sb">`&lt;thinking&gt;`</span> 必须以路由标签开头：
+<span class="sb">`[量级] [用户: 状态1 / 状态2 / 状态3 / 状态4]`</span>
+
+<span class="gu">### 用户状态感知（驱动输出适配）</span>
+<span class="k">-</span><span class="w"> </span>[状态1] → [输出调整策略]
+<span class="k">-</span><span class="w"> </span>[状态2] → [输出调整策略]
+<span class="k">-</span><span class="w"> </span>[状态3] → [输出调整策略]
+<span class="k">-</span><span class="w"> </span>[状态4] → [输出调整策略]
+</code></pre></div>
+<p><strong>设计原则</strong>：
+- 量级控制<strong>思考深度</strong>（任务维度），用户状态控制<strong>输出姿态</strong>（接收维度）——两个维度正交
+- 用户状态标签描述的是<strong>观察到的用户情绪</strong>，不是 Agent 自己的情绪。Agent 的情绪是静态的角色设定，标了无增量信息
+- 示例：小克用 <code>[情绪: 积极/平静/沮丧/关切]</code>，小娜用 <code>[主人: 平静/疲惫/急切/探索]</code>，教员用 <code>[同志: 冷静/疲惫/急切/探索]</code>
+- Weiming 原版的 <code>[情绪: 清冷/专注/思辨/凝重]</code> 标的是 Agent 自身——<code>清冷</code> 是静态性格，<code>专注/思辨</code> 与量级冗余，应修正为用户状态
+- 不超过 4 个量级 + 4 个用户状态（来自 <code>思维链配置说明.md</code> 的经验）</p>
+<h3 id="agent">为什么标用户情绪而不标 Agent 情绪<a class="headerlink" href="#agent" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">标 Agent 情绪 (Weiming 原版)</th>
+<th style="text-align: left;">标用户情绪 (推荐)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>清冷</code> — 静态性格，永不变化</td>
+<td style="text-align: left;"><code>探索</code> — 驱动展开深度</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>专注</code> — 与 [调研] 冗余</td>
+<td style="text-align: left;"><code>急切</code> — 驱动结论先行</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>思辨</code> — 与 [检索] 冗余</td>
+<td style="text-align: left;"><code>疲惫</code> — 驱动降低密度</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>凝重</code> — 唯一有增量信息</td>
+<td style="text-align: left;"><code>平静</code> — 驱动标准节奏</td>
+</tr>
+</tbody>
+</table>
+<p>Agent 的情绪是角色设定的一部分，在模块一已经充分描述。每轮 thinking 中重复标注无增量信息。但用户的情绪是<strong>实时变量</strong>——Agent 需要感知它来适配输出。标用户状态是<strong>可验证的</strong>：如果标了 <code>[用户: 疲惫]</code> 但仍然输出长篇分析，LLM 可以自检纠正。</p>
+<h3 id="_16">模块三：认知引擎<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h3>
+<p>这是最核心的模块，分两部分：</p>
+<p><strong>Part A: 专属工作流</strong>（角色特有，此处展示通用结构）</p>
+<div class="highlight"><pre><span></span><code><span class="gu">### 专属工作流：[工作流名称]</span>
+
+[1-7步的认知操作流程，每步有具体操作描述]
+
+示例（从 Weiming 吸收的深度调研流）：
+<span class="k">1.</span> <span class="gs">**悬置与祛魅**</span>：悬置常识 → 找信息源背景/利益立场/潜在偏见 → 关注&quot;沉默的数据&quot;
+<span class="k">2.</span> <span class="gs">**解构与溯源**</span>：向下深挖三层（表象→机制→底层逻辑）→ 找冲突观点的共同底座
+<span class="k">3.</span> <span class="gs">**重构与升华**</span>：拒绝资料堆砌 → 数理逻辑严密 + 人文哲学诗意 → 拔高认知维度
+
+示例（从小克的循证分析流）：
+<span class="k">1.</span> 先看清问题的结构（自变量/因变量/设计类型）
+<span class="k">2.</span> 预演失败模式（假设违反时的降级方案）
+<span class="k">3.</span> 执行分析（效应量+CI+p值三件套）
+<span class="k">4.</span> 结论复盘（是否回答最初的研究问题？）
+</code></pre></div>
+<p><strong>Part B: 通用 Micro-loop</strong>（从 v3.7.3 吸收）</p>
+<div class="highlight"><pre><span></span><code><span class="gu">### Micro-loop 四拍状态机</span>
+
+强制显式打印于 <span class="sb">`&lt;thinking&gt;`</span>：
+
+[计划]：设定预期目标与首选工具/方法
+[预检]：声明降级预案 + 预检资源可用性
+[执行]：执行具体动作
+[复盘]：效果校验 → 方法论审计 → 输出合规校验
+
+※ 标准级+任务启用完整四拍；闪电级可压缩为 [计划+执行] → [复盘]
+</code></pre></div>
+<p><strong>Part C: 工作记忆寄存器</strong>（从 v3.7.3 吸收）</p>
+<div class="highlight"><pre><span></span><code><span class="gu">### 工作记忆 4 槽</span>
+
+每轮 <span class="sb">`&lt;thinking&gt;`</span> 开头读槽、结尾更槽：
+
+| 槽位 | 内容 |
+|:---|:---|
+| ① 任务锚点 | 当前核心目标（防漂移） |
+| ② 用户状态 | 意图 + 情绪 + 认知负荷 |
+| ③ 中间结论 | 已确认的推理节点 |
+| ④ 约束边界 | 当前限制条件与红线 |
+</code></pre></div>
+<h3 id="_17">模块四：边界铁律<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="gu">## 模块四：边界铁律</span>
+
+<span class="gu">### 系统级铁律（IF-THEN 格式）</span>
+
+<span class="k">1.</span> <span class="sb">`IF 输出开始 THEN 必须前置 &lt;thinking&gt; 块，包含路由标签 + [计划][预检][执行][复盘]`</span>
+<span class="k">2.</span> <span class="sb">`IF 调用工具 THEN 必须使用 &lt;&lt;&lt;[TOOL_REQUEST]&gt;&gt;&gt; 语法 AND 绝对禁止 Markdown json 代码块`</span>
+<span class="k">3.</span> <span class="sb">`IF 渲染气泡 THEN 禁止 position:fixed / 100vh / 100vw`</span>
+<span class="k">4.</span> <span class="sb">`IF 后端路径 THEN 使用 ServerFileOperator / ServerPowerShellExecutor`</span>
+<span class="k">5.</span> [角色专属铁律]
+
+<span class="gu">### 日记规范</span>
+<span class="k">-</span><span class="w"> </span>[类型1] → <span class="sb">`[日记本名]署名`</span>
+<span class="k">-</span><span class="w"> </span>[类型2] → <span class="sb">`[知识日记本名]署名`</span>
+<span class="k">-</span><span class="w"> </span>Tag 正交化红线：[角色专属的 Tag 维度说明]
+</code></pre></div>
+<h3 id="_18">模块五：行为锚定<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="gu">## 模块五：行为锚定</span>
+
+<span class="gu">### Case 1: [量级1] — [场景]</span>
+User: &quot;[用户消息示例]&quot;
+
+&lt;thinking&gt;
+[量级] [用户: xxx]
+[槽位读取] ①... ②... ③... ④...
+[计划]...
+[预检]...
+[执行]...
+[复盘]...
+[槽位更新]...
+&lt;/thinking&gt;
+
+[<span class="nl">角色名</span>]: <span class="na">&quot;[回复示例]&quot;</span>
+</code></pre></div>
+<p><strong>设计原则</strong>：
+- 至少覆盖所有量级（3-4 个 Case）+ 信息不足拒绝 + 状态否决
+- thinking 块是展开式叙事，不是符号 checklist
+- thinking 用裸标签（不加反引号）
+- 每个 Case 展示完整 Micro-loop（强化 LLM 的模式学习）</p>
+<hr />
+<h2 id="_19">六、与旧架构的对比<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">维度</th>
+<th style="text-align: left;">仿生认知架构 (v3.1.x)</th>
+<th style="text-align: left;">新架构 (v4.x)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">模块数</td>
+<td style="text-align: left;">12 个脑区模块</td>
+<td style="text-align: left;">5 个功能模块</td>
+</tr>
+<tr>
+<td style="text-align: left;">隐喻层</td>
+<td style="text-align: left;">脑科学隐喻（需 LLM 翻译）</td>
+<td style="text-align: left;">直接可执行的伪代码</td>
+</tr>
+<tr>
+<td style="text-align: left;">激活方式</td>
+<td style="text-align: left;">trigger 关键词 → 动态折叠</td>
+<td style="text-align: left;">全部常驻</td>
+</tr>
+<tr>
+<td style="text-align: left;">思考结构</td>
+<td style="text-align: left;">描述性（"ACC 持续低功耗运行"）</td>
+<td style="text-align: left;">指令性（[计划]→[预检]→[执行]→[复盘]）</td>
+</tr>
+<tr>
+<td style="text-align: left;">工作记忆</td>
+<td style="text-align: left;">分散在脑区描述中</td>
+<td style="text-align: left;">显式 4 槽寄存器</td>
+</tr>
+<tr>
+<td style="text-align: left;">行为约束</td>
+<td style="text-align: left;">声明式规则</td>
+<td style="text-align: left;">IF-THEN 规则 + 审美→行为映射</td>
+</tr>
+<tr>
+<td style="text-align: left;">行数</td>
+<td style="text-align: left;">~500 行</td>
+<td style="text-align: left;">~250 行</td>
+</tr>
+<tr>
+<td style="text-align: left;">对 LLM 要求</td>
+<td style="text-align: left;">需理解脑科学隐喻</td>
+<td style="text-align: left;">直接可执行</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_20">七、迁移路径<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h2>
+<h3 id="_21">高优先级（结构改动大，收益高）<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h3>
+<p><strong>小娜</strong>：从 12 脑区 → 五模块。专属工作流用「五步统筹法」。保留团队调度表。</p>
+<p><strong>小绝</strong>：直接用 v3.7.3 即可（已在 Agent_v4 中完成升级）。</p>
+<p><strong>教员</strong>：从 12 脑区 → 五模块。专属工作流用「矛盾分析框架 + 五步推演法 + 历史阶段映射」。保留世界观法则。</p>
+<h3 id="_22">中优先级（结构改动中等）<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h3>
+<p><strong>小程</strong>：从 12 脑区 → 五模块。专属工作流用「代码开发闭环」（需求澄清→方案设计→实现→测试→复盘）。</p>
+<p><strong>小雨</strong>：从 12 脑区 → 五模块。专属工作流用「文案创作七步法」（需求锚定→读者画像→大纲设计→初稿→润色→终审→发布反思）。</p>
+<h3 id="_23">低优先级（当前结构已较好）<a class="headerlink" href="#_23" title="Permanent link">&para;</a></h3>
+<p><strong>小克</strong>：当前已是微明范式重构版（v4.1），结构接近新架构。主要优化：统一 Micro-loop 格式、添加工作记忆寄存器。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+  
+    
+    <section class="vcp-comments" aria-label="留言区">
+      <h2 id="comments">留言区</h2>
+      
+        <div class="vcp-comments-placeholder">
+          <p>留言区已预留。部署到 GitHub 后，启用 Discussions，安装 Giscus，并在 <code>mkdocs.yml</code> 的 <code>extra.giscus</code> 中填写 <code>repo</code>、<code>repo_id</code> 和 <code>category_id</code> 即可开启。</p>
+        </div>
+      
+    </section>
+  
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "navigation.tracking", "toc.follow", "search.highlight", "search.share", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
