@@ -1,4 +1,4 @@
-site_name: VCP 知识站
+site_name: VCP Tech Blog
 site_description: VCPToolBox 更新日志、源码解读与 Agent 提示词档案
 site_author: VCP Maintainer
 repo_url: ''
@@ -43,11 +43,11 @@ extra_css:
 
 extra:
   giscus:
-    enabled: false
-    repo: ""
-    repo_id: ""
+    enabled: true
+    repo: "xiongweijin/vcp-knowledge-site"
+    repo_id: "R_kgDOSfvpNA"
     category: "General"
-    category_id: ""
+    category_id: "DIC_kwDOSfvpNM4C9O0-"
     mapping: "pathname"
     reactions_enabled: "1"
     input_position: "bottom"
