@@ -1,11 +1,12 @@
 site_name: VCP Tech Blog
-site_description: VCPToolBox 更新日志、源码解读与 Agent 提示词档案
+site_description: VCPToolBox 技术文档与源码导读
 site_author: VCP Maintainer
-repo_url: ''
+site_url: https://xiongweijin.github.io/vcp-knowledge-site/
+repo_url: https://github.com/xiongweijin/vcp-knowledge-site
+repo_name: xiongweijin/vcp-knowledge-site
 
 theme:
   name: material
-  custom_dir: overrides
   language: zh
   features:
     - navigation.tabs
@@ -72,8 +73,7 @@ markdown_extensions:
 
 nav:
   - 首页: index.md
-  - 阅读路线: reading-routes.md
-  - VCP 系统解读:
+  - 01-VCP 系统解读:
       - vcp-system/index.md
       - 系统全景: vcp-system/01-system-overview.md
       - 变量与占位符体系: vcp-system/02-placeholders.md
@@ -90,15 +90,3 @@ nav:
       - VCP 系统深度导读: vcp-system/14-deep-guide.md
       - VCP 概念学习手册: vcp-system/15-human-guide.md
       - VCP 源码导航与运维手册: vcp-system/16-agent-ops-guide.md
-  - 更新日志:
-      - changelog/index.md
-      - 2026-05-12 VCP 更新: changelog/2026-05-12-vcp-update.md
-      - XiaoKe v4.0 更新: changelog/xiaoke-v4.0.md
-  - Agent 提示词档案:
-      - agents/index.md
-  - 审核与复盘:
-      - review/index.md
-      - 内容审核报告 2026-05-16: review/13-content-audit-20260516.md
-      - 系统联动全景与盲区分析: review/99-blindspots.md
-  - 部署:
-      - deploy/github-pages.md
