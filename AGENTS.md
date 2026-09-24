@@ -116,6 +116,10 @@ cd F:\kimicode\VCP知识站\方案B-MkDocs-Material
 python -m mkdocs gh-deploy --force --clean --remote-name homepage --remote-branch main
 ```
 
+依赖版本锁在 `方案B-MkDocs-Material/requirements.txt`（MkDocs 2.0 与 Material 主题不兼容，保持 `mkdocs<2`）。
+
+`.github/workflows/build-check.yml` 只做构建检查，不发布。不要再用 GitHub Actions 发布到 `vcp-knowledge-site` 项目页（见下方「已踩过的坑」第 1 条）。
+
 当前 Git remote：
 
 - `origin` -> `https://github.com/xiongweijin/vcp-knowledge-site.git`
@@ -163,6 +167,7 @@ Invoke-WebRequest -Uri https://xiongweijin.github.io/vcp-system/01-system-overvi
 5. PowerShell 读取中文文件时可能显示乱码，但文件本身是 UTF-8。用 Python `Path(...).read_text(encoding="utf-8")` 检查更可靠。
 6. `navigation.expand` 已去掉，让左侧目录更接近可展开/收起。
 7. 评论区不是模板 override，而是通过 `docs/javascripts/giscus.js` 注入。
+8. `mkdocs.yml` 设置了 `font: false`，不加载 Google Fonts，避免国内访问卡顿。
 
 ## 后续建议
 

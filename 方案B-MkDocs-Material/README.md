@@ -3,7 +3,7 @@
 ## 安装
 
 ```powershell
-python -m pip install mkdocs-material
+python -m pip install -r requirements.txt
 ```
 
 ## 本地预览

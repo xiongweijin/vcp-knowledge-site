@@ -1,40 +1,36 @@
-# VCP 知识站
+# 熊的 AI 项目札记 · 源码仓库
 
-> 生成日期：2026-05-17  
-> 源资料目录：`F:\VCP\VCPToolBox\更新日志`  
-> 目标：把 VCP 更新日志、源码解读、Agent 提示词演化资料整理成可浏览、可检索、可持续维护的知识站。
+这是个人网站 **https://xiongweijin.github.io/** 的源码。网站用 [MkDocs Material](https://squidfunk.github.io/mkdocs-material/) 构建，内容是学习 AI 与 GitHub 开源项目的记录，目前主要是「01-VCP 系统解读」。
 
-本目录包含两套可对比方案：
+| 仓库 | 放什么 |
+|---|---|
+| `vcp-knowledge-site`（本仓库） | Markdown 原稿、站点配置 —— **改文章在这里改** |
+| [`xiongweijin.github.io`](https://github.com/xiongweijin/xiongweijin.github.io) | 构建出来的网页，由部署命令自动覆盖，不要手动改 |
 
-| 方案 | 目录 | 定位 | 推荐程度 |
-|---|---|---|---|
-| 方案 A | `方案A-Hugo-FixIt/` | 更接近 Cygnus Tech Blog，偏博客/专栏风格 | 适合公开展示 |
-| 方案 B | `方案B-MkDocs-Material/` | 更像工程文档中心，偏项目手册/知识库 | 更推荐作为主力 |
+## 目录
 
-## 我的建议
+| 路径 | 作用 |
+|---|---|
+| `方案B-MkDocs-Material/mkdocs.yml` | 站点配置：标题、导航、主题、Giscus 留言区 |
+| `方案B-MkDocs-Material/docs/` | 所有文章（Markdown）、样式和脚本 |
+| `方案B-MkDocs-Material/requirements.txt` | 构建所需的 Python 依赖 |
+| `.github/workflows/build-check.yml` | 每次推送自动检查网站能否正常构建（只检查，不发布） |
+| `AGENTS.md` | 给 AI 助手看的交接说明（部署步骤、踩过的坑） |
+| `两种方案对比.md`、`对比预览.html`、`启动-Hugo预览.ps1` | 早期 Hugo 与 MkDocs 方案对比的历史资料。方案 A（Hugo）只保留在本地，未上传 |
 
-- 原始目录 `更新日志/` 不动，继续作为资料源。
-- `VCP知识站/` 作为发布目录，所有内容都从资料源整理/复制而来。
-- 先比较两套目录结构，再决定长期维护哪一种。
-- 如果目标是给自己和 Agent 查资料，优先用 MkDocs Material。
-- 如果目标是对外展示、写系列文章、沉淀公开博客，优先用 Hugo + FixIt。
+## 常用命令
 
-## 当前样板包含
+在 `方案B-MkDocs-Material` 目录下：
 
-- VCP 新手阅读路线
-- Agent 维护路线
-- VCP 系统解读核心文档
-- 更新日志入口
-- Agent 提示词档案入口
-- 审核与复盘入口
+```powershell
+# 安装依赖（第一次）
+python -m pip install -r requirements.txt
 
-## 注意
+# 本地预览，浏览器打开 http://127.0.0.1:8000/
+python -m mkdocs serve
 
-当前机器尚未安装 Hugo / MkDocs。两个方案都已生成源码结构和配置文件；安装对应工具后即可预览。
+# 发布到 https://xiongweijin.github.io/
+python -m mkdocs gh-deploy --force --clean --remote-name homepage --remote-branch main
+```
 
-## 部署与分享
-
-- MkDocs 版已经预留 GitHub Pages 工作流：`.github/workflows/deploy-mkdocs.yml`
-- 部署说明见：`方案B-MkDocs-Material/docs/deploy/github-pages.md`
-- 留言区使用 Giscus 方案，先在 `mkdocs.yml` 的 `extra.giscus` 中保持关闭；等 GitHub 仓库、Discussions 和 Giscus 配好后再启用。
-- 本地预览建议运行 `启动-MkDocs预览.ps1`。脚本会先构建静态站，再用 `http://127.0.0.1:8000/` 预览，效果更接近 GitHub Pages。
+`homepage` 是指向 `xiongweijin.github.io` 仓库的 git remote，详见 `AGENTS.md`。中文路径导致本地预览异常时，可以用 `启动-MkDocs预览.ps1`。
