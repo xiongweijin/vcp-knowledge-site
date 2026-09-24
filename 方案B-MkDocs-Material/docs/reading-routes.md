@@ -2,7 +2,7 @@
 
 ## 路线 A：快速理解 VCP
 
-1. 打开 `17-VCP动态城市地图-20260517.html` 建立直觉。
+1. 打开 [VCP 动态城市地图](vcp-system/17-VCP动态城市地图-20260517.html) 建立直觉。
 2. 阅读 [VCP 概念学习手册](vcp-system/15-human-guide.md)。
 3. 再读 [系统全景](vcp-system/01-system-overview.md)。
 4. 需要细节时回到 [VCP 系统深度导读](vcp-system/14-deep-guide.md)。

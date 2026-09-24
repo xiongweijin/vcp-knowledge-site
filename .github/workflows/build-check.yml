@@ -1,0 +1,35 @@
+name: Build check
+
+# 只检查网站能否正常构建，不发布。
+# 正式网站 https://xiongweijin.github.io/ 由 mkdocs gh-deploy 发布到
+# xiongweijin.github.io 仓库，见 AGENTS.md「部署方式」。
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        working-directory: 方案B-MkDocs-Material
+
+      - name: Build site
+        run: mkdocs build --clean
+        working-directory: 方案B-MkDocs-Material

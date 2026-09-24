@@ -1,0 +1,4 @@
+# 构建网站所需的 Python 依赖
+# MkDocs 2.0 与 Material 主题不兼容，先锁在 1.x
+mkdocs>=1.6,<2
+mkdocs-material>=9.7,<10

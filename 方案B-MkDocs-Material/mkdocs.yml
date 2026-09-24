@@ -8,6 +8,8 @@ repo_name: xiongweijin/vcp-knowledge-site
 theme:
   name: material
   language: zh
+  # 不加载 Google Fonts（国内访问慢/打不开），改用系统字体
+  font: false
   features:
     - navigation.tabs
     - navigation.sections

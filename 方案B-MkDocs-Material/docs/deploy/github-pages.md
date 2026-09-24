@@ -1,63 +1,39 @@
 # 部署到 GitHub Pages
 
-这里推荐把 `F:\kimicode\VCP知识站` 作为一个单独仓库推到 GitHub，然后用 GitHub Actions 自动部署 MkDocs 版知识站。
+网站地址是 `https://xiongweijin.github.io/`，由两个仓库配合完成：
 
-## 推荐方式：GitHub Actions
+| 仓库 | 作用 |
+|---|---|
+| `xiongweijin/vcp-knowledge-site` | 源码：Markdown 文章和 `mkdocs.yml` |
+| `xiongweijin/xiongweijin.github.io` | 成品：构建好的网页，GitHub Pages 从它的 `main` 分支根目录发布 |
 
-1. 在 GitHub 新建一个公开仓库，例如 `vcp-knowledge-site`。
-2. 本地进入 `F:\kimicode\VCP知识站`。
-3. 初始化并推送仓库：
+## 发布步骤
+
+1. 在源码仓库改好文章，提交并推送：
 
 ```powershell
-git init
 git add .
-git commit -m "init vcp knowledge site"
-git branch -M main
-git remote add origin https://github.com/<你的用户名>/vcp-knowledge-site.git
-git push -u origin main
+git commit -m "更新文章"
+git push origin main
 ```
 
-4. 打开 GitHub 仓库的 `Settings -> Pages`。
-5. Source 选择 `GitHub Actions`。
-6. 后续每次 push 到 `main`，工作流会自动构建并发布。
-
-仓库根目录已经预留了 `.github/workflows/deploy-mkdocs.yml`，默认构建 `方案B-MkDocs-Material`。
-
-## 开启留言区
-
-留言区使用 Giscus，也就是 GitHub Discussions 驱动的评论系统。
-
-前置条件：
-
-- 仓库必须是公开仓库。
-- 在仓库 `Settings -> Features` 里启用 Discussions。
-- 安装 Giscus GitHub App。
-- 到 `https://giscus.app/zh-CN` 生成配置。
-
-然后修改 `方案B-MkDocs-Material/mkdocs.yml`：
-
-```yaml
-extra:
-  giscus:
-    enabled: true
-    repo: "<你的用户名>/vcp-knowledge-site"
-    repo_id: "<giscus 生成的 repo-id>"
-    category: "General"
-    category_id: "<giscus 生成的 category-id>"
-```
-
-## 手动部署方式
-
-如果暂时不想用 GitHub Actions，也可以在 `方案B-MkDocs-Material` 目录下运行：
+2. 在 `方案B-MkDocs-Material` 目录下构建并发布到主页仓库：
 
 ```powershell
-python -m mkdocs gh-deploy
+python -m pip install -r requirements.txt
+python -m mkdocs gh-deploy --force --clean --remote-name homepage --remote-branch main
 ```
 
-这个命令会构建站点，并把生成结果推送到 `gh-pages` 分支。运行前建议先执行：
+`homepage` 是指向 `https://github.com/xiongweijin/xiongweijin.github.io.git` 的 git remote。第一次使用前需要添加：
 
 ```powershell
-python -m mkdocs build --clean
+git remote add homepage https://github.com/xiongweijin/xiongweijin.github.io.git
 ```
 
-确认本地构建没有错误。
+## 自动构建检查
+
+源码仓库的 `.github/workflows/build-check.yml` 会在每次推送后自动构建一遍网站，只检查有没有出错，不会发布。如果它变红，说明这次修改让网站构建失败了，先修好再发布。
+
+## 留言区
+
+留言区使用 Giscus（GitHub Discussions 驱动），配置在 `mkdocs.yml` 的 `extra.giscus`，由 `docs/javascripts/giscus.js` 注入到每篇文章底部。留言保存在源码仓库的 Discussions 里。
